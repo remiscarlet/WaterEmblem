@@ -1,6 +1,6 @@
-##################################
-###### Main file for Touhou ######
-##################################
+#######################################
+###### Main file for WaterEmblem ######
+#######################################
 import os
 import pygame
 import random
@@ -9,6 +9,7 @@ import sprites
 import defaultVals
 import string
 import sounds
+import levels
 import popup
 try: 
 	import thread
@@ -18,16 +19,22 @@ except ImportError:
 #############################
 ###### Primary Class ######
 #############################
-class Touhou(object):
+class WaterEmblem(object):
 	############################
 	###### Initialisation ######
 	############################
 	def __init__(self, config, win):
-		self.init(config)
+		self.init(config, win)
 
-	def init(self, config):
-		self.varInit(config)
-		pass
+	def init(self, config, win):
+		self.varInit(config, win)
+		self.fontInit()
+		self.configInit(config)
+		self.guiInit()
+		self.soundInit()
+		self.keyInit(config)
+		self.levelInit()
+		self.spriteInit()
 
 	def varInit(self, config, win=None):
 		#self.configInit(config)
@@ -45,8 +52,9 @@ class Touhou(object):
 		self.musicPlaying = False
 
 	def fontInit(self):
-		self.dialogueFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 16)
-		self.nameFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 8)
+		#self.dialogueFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 16)
+		#self.nameFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 8)
+		pass
 
 	def configInit(self, config):
 		self.config = config
@@ -72,6 +80,10 @@ class Touhou(object):
 
 	def spriteInit(self):
 		pass
+
+	def levelInit(self):
+		self.level1 = levels.Level()
+		self.currentLevel = "level1"
 
 	#############################
 	###### Events Handling ######
@@ -133,7 +145,12 @@ class Touhou(object):
 		pygame.mixer.music.play(-1)
 
 	def drawPlaying(self):
-		pass
+		#Padding for centering maps smaller than the window
+		widthPad,heightPad = 0,0
+		if self.level1.width<self.width: widthPad = (self.width-self.level1.width)/2
+		if self.level1.height<self.height: heightPad = (self.height-self.level1.height)/2
+		self.win.blit(self.level1.mapSurf, (widthPad,heightPad))
+
 
 	def drawEditor(self):
 		pass
@@ -145,7 +162,14 @@ class Touhou(object):
 		pass
 
 	def redrawAll(self):
-		self.win.fill((0,0,0))
+		self.win.fill((0,0,44))
+		self.drawMenu()
+		self.drawPlaying()
+		self.drawEditor()
+		self.drawOptions()
+		self.drawInstructions()
+		pygame.transform.scale(self.win, (self.trueWidth, self.trueHeight), self.trueWin)
+		pygame.display.update()
 		
 
 
@@ -188,7 +212,7 @@ def run():
 	trueWidth = int(screenSize[0])
 	trueHeight = int(screenSize[1])
 	win = pygame.display.set_mode((trueWidth,trueHeight))
-	game = Touhou(config, win)
+	game = WaterEmblem(config, win)
 	game.run()
 	#except:
 	#	popup.error("Fatal Error", "Yikes! A fatal error just occurred!\nFear not though, I'll just restart the program.\nBasically, pygame sucks.")

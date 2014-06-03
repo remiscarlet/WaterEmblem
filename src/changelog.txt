@@ -1,0 +1,3 @@
+6/3/2014 - Remi
+	- Added basic map initialization with a dummy map. 
+	- Very crude and basic map drawing with no textures. (Solid colors)
