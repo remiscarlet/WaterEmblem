@@ -82,8 +82,7 @@ class WaterEmblem(object):
 		pass
 
 	def levelInit(self):
-		self.level1 = levels.Level()
-		self.currentLevel = "level1"
+		self.currentLevel = levels.Level()
 
 	#############################
 	###### Events Handling ######
@@ -147,9 +146,9 @@ class WaterEmblem(object):
 	def drawPlaying(self):
 		#Padding for centering maps smaller than the window
 		widthPad,heightPad = 0,0
-		if self.level1.width<self.width: widthPad = (self.width-self.level1.width)/2
-		if self.level1.height<self.height: heightPad = (self.height-self.level1.height)/2
-		self.win.blit(self.level1.mapSurf, (widthPad,heightPad))
+		if self.currentLevel.width<self.width: widthPad = (self.width-self.currentLevel.width)/2
+		if self.currentLevel.height<self.height: heightPad = (self.height-self.currentLevel.height)/2
+		self.win.blit(self.currentLevel.mapSurf, (widthPad,heightPad))
 
 
 	def drawEditor(self):
