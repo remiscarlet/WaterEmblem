@@ -146,6 +146,7 @@ class Touhou(object):
 
 	def redrawAll(self):
 		self.win.fill((0,0,0))
+		
 
 
 	def run(self):
