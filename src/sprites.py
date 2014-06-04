@@ -17,6 +17,9 @@ class Cursor(pygame.sprite.Sprite):
 		self.image = pygame.Surface((32,32), pygame.SRCALPHA, 32).convert_alpha()
 		self.image.blit(self.blank, (0,0))
 		self.image.blit(self.cursor,(0,0))
+		# MAPSIZE IA IN XY, NOT YX
+		self.mapSize = (currentLevel.size[1],currentLevel.size[0])
+		# POS IS SAVED AS XY, NOT YX.
 		self.pos = [0,0]
 		self.rect = self.image.get_rect()
 		self.rect.topleft = (currentLevel.widthPad,currentLevel.heightPad)
@@ -36,8 +39,12 @@ class Cursor(pygame.sprite.Sprite):
 	## Supplied dir should be a tuple with direction. Eg, (0,1), (-1,+1), (1,0), etc
 	#############
 	def moveCursor(self, direc):
-		self.pos = [self.pos[0]+direc[0],self.pos[1]+direc[1]]
-		self.rect.topleft = (self.rect.left+32*direc[0],self.rect.top-32*direc[1])
+		newPos = [self.pos[0]+direc[0],self.pos[1]-direc[1]]
+		if (newPos[0]>=0 and newPos[0]<self.mapSize[0] and
+			newPos[1]>=0 and newPos[1]<11):
+			self.pos = [self.pos[0]+direc[0],self.pos[1]-direc[1]]
+			self.rect.topleft = (self.rect.left+32*direc[0],self.rect.top-32*direc[1])
+
 
 
 		
