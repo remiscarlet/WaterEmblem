@@ -90,11 +90,7 @@ class Level(object):
 		win = pygame.Surface((32*self.size[1],32*self.size[0]))
 		#oceanTile = pygame.Surface((32,32))
 		#oceanTile.fill((0,0,150))
-<<<<<<< HEAD
 		oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","actual_ocean.png"))
-=======
-		oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","ocean.png"))
->>>>>>> parent of 3741fc5... Added Map Scrolling
 		pygame.draw.rect(oceanTile, (0,0,200), (0,0,32,32), 1)
 		for row in xrange(len(self.map)):
 			for col in xrange(len(self.map[0])):
