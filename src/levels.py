@@ -18,20 +18,20 @@ TESTMAP = [['o','o','o','o','o','o','o','o','o','o',],
 		   ['o','o','o','o','o','o','o','o','o','o',],
 		   ['o','o','o','o','o','o','o','o','o','o',]]
 
-TESTMAP2 = [['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',],
-		   ['o','o','o','o','o','o','o','o','o','o','o','o','o',]]
+TESTMAP2 = [['s','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o',],
+		   ['o','s','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o',],
+		   ['o','o','s','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o',],
+		   ['o','o','o','s','o','o','o','o','o','o','o','o','o','o','o','o','o','s','o','o','o','o','o',],
+		   ['o','o','o','o','s','o','o','o','o','o','o','o','o','o','o','o','s','o','s','o','o','o','o',],
+		   ['o','o','o','s','o','o','o','o','o','o','o','o','o','o','o','s','o','o','o','s','o','o','o',],
+		   ['o','o','s','o','o','o','o','o','o','o','o','o','o','o','s','o','o','o','o','o','s','o','o',],
+		   ['o','s','o','o','o','o','o','o','o','o','o','o','o','s','o','o','o','o','o','o','o','s','o',],
+		   ['o','o','s','o','o','o','o','o','o','o','o','o','s','o','o','o','o','o','o','o','o','o','s',],
+		   ['o','o','o','s','o','o','o','o','o','o','o','s','o','o','o','o','o','o','o','o','o','o','o',],
+		   ['o','o','o','o','s','o','o','o','o','o','s','o','o','o','o','o','o','o','o','o','o','o','o',],
+		   ['o','o','o','o','o','s','o','o','o','s','o','o','o','o','o','o','o','o','o','o','o','o','o',],
+		   ['o','o','o','o','o','o','s','o','s','o','o','o','o','o','o','o','o','o','o','o','o','o','o',],
+		   ['o','o','o','o','o','o','o','s','o','o','o','o','o','o','o','o','o','o','o','o','o','o','o',]]
 
 TESTMAPUNITPOS = [[' ',' ',' ',' ',' ',' ',' ',' ','A','B',],
 				  [' ',' ',' ',' ',' ',' ',' ',' ',' ','C',],
@@ -44,27 +44,33 @@ TESTMAPUNITPOS = [[' ',' ',' ',' ',' ',' ',' ',' ','A','B',],
 				  ['3',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
 				  ['1','2',' ',' ',' ',' ',' ',' ',' ',' ',]]
 
-TESTMAPUNITPOS2 = [[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','A','B',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','C',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  ['3',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
-				  ['1','2',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',]]
+TESTMAPUNITPOS2 = [[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','A','B',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','C',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  ['3',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  ['1','2',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',]]
 
 
 
 class Level(object):
 	def __init__(self, this):
+		self.tileInit()
 		self.mapInit(this)
 
+	def tileInit(self):
+		self.oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","ocean.png"))
+		pygame.draw.rect(self.oceanTile, (0,0,200), (0,0,32,32), 1)
+		self.shallowTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","shallow.png"))
+		pygame.draw.rect(self.shallowTile, (0,0,200), (0,0,32,32), 1)
 	##############
 	## mapInit initializes the map and related data
 	##############
@@ -78,11 +84,14 @@ class Level(object):
 		self.height = self.size[0]*32
 		self.mapSurf = self.drawMap() #Makes a map surface the size of the map with 32x32 being the size of one tile
 		self.widthPad,self.heightPad = 0,0
+		#boardViewTopLeft is the topleft position of the board currently on-screen.
+		#This is for maps that are larger than the actual display screen (Read: Almost all maps)
+		#This allows to keep reference as to what portion of the map is currently visible.
+		self.boardViewTopLeft = [0,0]
 		#because gameBoardWinRect is a Rect, 2nd and 3rd indices are the width and height.
 		#self = this class. this = parent class. Horrible code. Will fix later.
 		if self.width<this.gameBoardWinRect[2]: self.widthPad = (this.width-self.width)/2
 		if self.height<this.gameBoardWinRect[3]: self.heightPad = (this.height-self.height)/2
-
 	###############
 	## drawMap will take the map symbols and draw it as an actual pygame surface
 	###############
@@ -90,14 +99,14 @@ class Level(object):
 		win = pygame.Surface((32*self.size[1],32*self.size[0]))
 		#oceanTile = pygame.Surface((32,32))
 		#oceanTile.fill((0,0,150))
-		oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","ocean.png"))
-		pygame.draw.rect(oceanTile, (0,0,200), (0,0,32,32), 1)
 		for row in xrange(len(self.map)):
 			for col in xrange(len(self.map[0])):
 				tileType = self.map[row][col]
 				pos = (32*col,32*row) #FLIPPING ROW AND COL HERE BECAUSE METHODS TAKE ARGS IN X AND Y, NOT Y AND X
 				if tileType == "o":
-					win.blit(oceanTile, pos)
+					win.blit(self.oceanTile, pos)
+				if tileType == "s":
+					win.blit(self.shallowTile,pos)
 		return win
 
 	#################
