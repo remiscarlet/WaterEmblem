@@ -37,7 +37,7 @@ class Cursor(pygame.sprite.Sprite):
 	#############
 	def moveCursor(self, direc):
 		self.pos = [self.pos[0]+direc[0],self.pos[1]+direc[1]]
-		self.rect.topleft = (32*self.pos[1],32*self.pos[0])
+		self.rect.topleft = (self.rect.left+32*direc[0],self.rect.top-32*direc[1])
 
 
 		

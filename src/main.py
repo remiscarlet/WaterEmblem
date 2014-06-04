@@ -114,10 +114,16 @@ class WaterEmblem(object):
 
 	def keyInit(self, config):
 		try:
-			pass
+			self.leftKey = int(eval("pygame."+config["Left"]))
+			self.rightKey = int(eval("pygame."+config["Right"]))
+			self.upKey = int(eval("pygame."+config["Up"]))
+			self.downKey = int(eval("pygame."+config["Down"]))
 		except:
 			config = remakeConfig()
-			pass
+			self.leftKey = int(eval("pygame."+config["Left"]))
+			self.rightKey = int(eval("pygame."+config["Right"]))
+			self.upKey = int(eval("pygame."+config["Up"]))
+			self.downKey = int(eval("pygame."+config["Down"]))
 		pygame.key.set_repeat(250, 50)
 
 	def levelInit(self):
@@ -133,16 +139,25 @@ class WaterEmblem(object):
 	#############################
 
 	def events(self):
-		keys = pygame.key.get_pressed()
 		#Because the gameplay requires constant stream of keypress
 		#information, continuously send anyway.
-		if self.status["playing"]: self.playingUpdate(keys)
+		if self.status["playing"]: self.playingUpdate()
 		#for all other events
 		for event in pygame.event.get():
 			#quit when x button is pressed
 			if event.type == pygame.QUIT: self.isRunning = False
 			#check that the event has attr of key to prevent crashes
 			if hasattr(event, 'key'):
+				if event.key == self.upKey:
+					if self.status["playing"]: self.playingUpdate("up")
+				if event.key == self.downKey:
+					if self.status["playing"]: self.playingUpdate("down")
+				if event.key == self.leftKey:
+					if self.status["playing"]: self.playingUpdate("left")
+				if event.key == self.rightKey:
+					if self.status["playing"]: self.playingUpdate("right")
+
+
 				pass
 
 	def menuUpdate(self, key):
@@ -169,8 +184,18 @@ class WaterEmblem(object):
 	def gameWinUpdate(self, key):
 		pass
 
-	def playingUpdate(self, keys):
+	def playingUpdate(self, keys=None):
 		self.playerUIGroup.update()
+		if keys != None:	
+			if keys == "down":
+				self.currentLevel.cursor.moveCursor((0,-1))
+			if keys == "up":
+				self.currentLevel.cursor.moveCursor((0,+1))
+			if keys == "left":
+				self.currentLevel.cursor.moveCursor((-1,0))
+			if keys == "right":
+				self.currentLevel.cursor.moveCursor((+1,0))
+
 
 
 
@@ -214,9 +239,9 @@ class WaterEmblem(object):
 		self.win.blit(self.gameBoardWin, self.gameBoardWinRect)
 		self.win.blit(self.gameInfoWin, self.gameInfoWinRect)
 		for sprite in self.playerUIGroup:
-			self.win.blit(sprite.image,sprite.rect)
 			if isinstance(sprite, sprites.Cursor):
 				blit_alpha(self.win,sprite.white, sprite.rect, sprite.alpha)
+			self.win.blit(sprite.image,sprite.rect)
 
 	def drawEditor(self):
 		pass
@@ -273,7 +298,8 @@ def run():
 	pygame.display.set_caption("Water Emblem")
 	#pygame.display.set_icon(pygame.image.load(os.path.join(os.path.curdir,"img","gui","icon.png")))
 	pygame.mouse.set_visible(1)
-	pygame.event.set_allowed([pygame.QUIT,pygame.KEYDOWN,pygame.KEYUP])
+	pygame.event.set_allowed(None)
+	pygame.event.set_allowed([pygame.QUIT,pygame.KEYDOWN])
 	screenSize = config["Screen Size"].split("x")
 	trueWidth = int(screenSize[0])
 	trueHeight = int(screenSize[1])
