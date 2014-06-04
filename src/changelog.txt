@@ -4,3 +4,8 @@
 	- Added area at bottom for UI. Gamescreen is now split into the game's "board" and "info" sections.
 	- Some kind of base class for info UI manipulation
 	- Proposal UI storyboards
+6/4/2014 - Remi
+	- Map scrolling
+	- Terrain info based on cursor position
+	- Added temp character portrait of Kaga <3
+	- Fixed event handling to process diagonal/multi-key inputs

@@ -30,10 +30,11 @@ class WaterEmblem(object):
 		self.varInit(config, win)
 		self.fontInit()
 		self.configInit(config)
+		self.preGuiInit()
+		self.levelInit()
 		self.guiInit()
 		self.soundInit()
 		self.keyInit(config)
-		self.levelInit()
 		self.spriteInit()
 
 	def varInit(self, config, win=None):
@@ -61,6 +62,15 @@ class WaterEmblem(object):
 		self.config["SFX"] = int(self.config["SFX"])/100.0
 		self.config["BGM"] = int(self.config["BGM"])/100.0
 
+	def preGuiInit(self):
+		self.gameBoardWin = pygame.Surface((640,352))
+		self.gameBoardWinRect = (0,0,640,352) #Topleft corner of gameBoardWin on the display surface to blit to
+		self.gameInfoWin = pygame.Surface((640,128))
+		self.gameInfoWinRect = (0,352,640,128) #Same as above
+
+	def levelInit(self):
+		self.currentLevel = levels.Level(self)
+
 
 	############################################################################
 	########### Entire below code should be looked at after UI is finalized ####
@@ -76,11 +86,6 @@ class WaterEmblem(object):
 			def __init__(self):
 				self.kaga = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "kaga.png"))
 				self.kagaRect = self.kaga.get_rect()
-
-		self.gameBoardWin = pygame.Surface((640,352))
-		self.gameBoardWinRect = (0,0,640,352) #Topleft corner of gameBoardWin on the display surface to blit to
-		self.gameInfoWin = pygame.Surface((640,128))
-		self.gameInfoWinRect = (0,352,640,128) #Same as above
 		self.tilePortraits = tilePortraitInit()
 		self.kanmusuPortraits = kanmusuPortraitInit()
 		#panel 1
@@ -93,10 +98,12 @@ class WaterEmblem(object):
 		pygame.draw.rect(self.gameInfoPanel1, (0,0,0), (0,0,128,128), 1)
 		self.gameInfoPanel1Rect = (0,0,128,128)
 		#panel 2
-		self.gameInfoPanel2 = pygame.Surface((128,128))
-		self.gameInfoPanel2.fill((255,255,255))
-		pygame.draw.rect(self.gameInfoPanel2, (0,0,0), (0,0,128,128), 1)
-		self.gameInfoPanel2Rect = (128,0,128,128)
+		#self.gameInfoPanel2 = pygame.Surface((128,128))
+		#self.gameInfoPanel2.fill((255,255,255))
+		#pygame.draw.rect(self.gameInfoPanel2, (0,0,0), (0,0,128,128), 1)
+		#self.gameInfoPanel2Rect = (128,0,128,128)
+		self.gameInfoPanel2 = gui.GameInfoPanel2(self.currentLevel)
+		self.gameInfoPanel2.update(self.currentLevel)
 		#panel 3
 		self.gameInfoPanel3 = gui.GameInfoPanel3()
 		self.gameInfoPanel3.update("o", self)
@@ -133,16 +140,13 @@ class WaterEmblem(object):
 			self.rightKey = int(eval("pygame."+config["Right"]))
 			self.upKey = int(eval("pygame."+config["Up"]))
 			self.downKey = int(eval("pygame."+config["Down"]))
-		pygame.key.set_repeat(250, 50)
-
-	def levelInit(self):
-		self.currentLevel = levels.Level(self)
+		pygame.key.set_repeat(150, 50)
 
 	def spriteInit(self):
 		self.playerUIGroup = pygame.sprite.Group()
 		self.currentLevel.cursor = sprites.Cursor(self.currentLevel)
 		self.playerUIGroup.add(self.currentLevel.cursor)
-		pass
+
 	#############################
 	###### Events Handling ######
 	#############################
@@ -157,17 +161,13 @@ class WaterEmblem(object):
 			if event.type == pygame.QUIT: self.isRunning = False
 			#check that the event has attr of key to prevent crashes
 			if hasattr(event, 'key'):
-				if event.key == self.upKey:
-					if self.status["playing"]: self.playingUpdate("up")
-				if event.key == self.downKey:
-					if self.status["playing"]: self.playingUpdate("down")
-				if event.key == self.leftKey:
-					if self.status["playing"]: self.playingUpdate("left")
-				if event.key == self.rightKey:
-					if self.status["playing"]: self.playingUpdate("right")
+				keys = pygame.key.get_pressed()
+				if (event.key == self.upKey or event.key == self.downKey or
+					event.key == self.leftKey or event.key == self.rightKey):
+					if self.status["playing"]: self.playingUpdate(keys)
 
 
-				pass
+
 
 	def menuUpdate(self, key):
 		pass
@@ -195,20 +195,25 @@ class WaterEmblem(object):
 
 	def playingUpdate(self, keys=None):
 		self.playerUIGroup.update()
-		if keys != None:	
-			if keys == "down":
+		self.gameInfoPanel2.update(self.currentLevel)
+		if keys != None:
+			up = keys[self.upKey]
+			down = keys[self.downKey]
+			left = keys[self.leftKey]
+			right = keys[self.rightKey]
+			if down:
 				self.currentLevel.cursor.moveCursor((0,-1), self.currentLevel)
 				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
-			if keys == "up":
+			if up:
 				self.currentLevel.cursor.moveCursor((0,+1), self.currentLevel)
 				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
-			if keys == "left":
+			if left:
 				self.currentLevel.cursor.moveCursor((-1,0), self.currentLevel)
 				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
-			if keys == "right":
+			if right:
 				self.currentLevel.cursor.moveCursor((+1,0), self.currentLevel)
 				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
@@ -241,7 +246,7 @@ class WaterEmblem(object):
 			def drawPanel1():
 				self.gameInfoWin.blit(self.gameInfoPanel1,self.gameInfoPanel1Rect)
 			def drawPanel2():
-				self.gameInfoWin.blit(self.gameInfoPanel2,self.gameInfoPanel2Rect)
+				self.gameInfoWin.blit(self.gameInfoPanel2.fullSurf,self.gameInfoPanel2.rect)
 			def drawPanel3():
 				self.gameInfoWin.blit(self.gameInfoPanel3.fullSurf,self.gameInfoPanel3.rect)
 			def drawPanel4():
