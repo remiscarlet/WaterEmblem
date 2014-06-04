@@ -20,11 +20,16 @@ class GameInfoPanel3(object):
 	#TileType should be all undercase name of the tile
 	#"this" is just the self of the parent class, or the main class.
 	def update(self, tileType, this):
-		tempText = this.dialogueFont.render(tileType.capitalize(), True, (0,0,0))
-		width = this.dialogueFont.size(tileType)[0]
+		tile = None
+		if tileType == "o": tile = "ocean"
+		if tileType == "s": tile = "shallow"
+		tempText = this.dialogueFont.render(tile.capitalize(), True, (0,0,0))
+		width = this.dialogueFont.size(tile)[0]
 		padding = (128-width)/2
+		self.titleSurf.fill((255,255,255))
 		self.titleSurf.blit(tempText, (padding,0))
-		self.imageSurf.blit(eval("this.tiles."+tileType), (0,0))
+		print tileType
+		self.imageSurf.blit(eval("this.tilePortraits."+tile), (0,0))
 		self.drawPanel()
 
 	def drawPanel(self):

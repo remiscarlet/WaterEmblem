@@ -66,16 +66,18 @@ class WaterEmblem(object):
 	########### Entire below code should be looked at after UI is finalized ####
 	############################################################################
 	def guiInit(self):
-		class tileInit(object):
+		class tilePortraitInit(object):
 			def __init__(self):
 				self.ocean = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "actual_ocean.png"))
 				self.oceanRect = self.ocean.get_rect()
+				self.shallow = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "shallow.png"))
+				self.shallowRect = self.shallow.get_rect()
 
 		self.gameBoardWin = pygame.Surface((640,352))
 		self.gameBoardWinRect = (0,0,640,352) #Topleft corner of gameBoardWin on the display surface to blit to
 		self.gameInfoWin = pygame.Surface((640,128))
 		self.gameInfoWinRect = (0,352,640,128) #Same as above
-		self.tiles = tileInit()
+		self.tilePortraits = tilePortraitInit()
 		#panel 1
 		self.gameInfoPanel1 = pygame.Surface((128,128))
 		self.gameInfoPanel1.fill((255,255,255))
@@ -92,7 +94,7 @@ class WaterEmblem(object):
 		self.gameInfoPanel2Rect = (128,0,128,128)
 		#panel 3
 		self.gameInfoPanel3 = gui.GameInfoPanel3()
-		self.gameInfoPanel3.update("ocean", self)
+		self.gameInfoPanel3.update("o", self)
 		#panel 4
 		self.gameInfoPanel4 = pygame.Surface((128,128))
 		self.gameInfoPanel4.fill((255,255,255))
@@ -189,12 +191,20 @@ class WaterEmblem(object):
 		if keys != None:	
 			if keys == "down":
 				self.currentLevel.cursor.moveCursor((0,-1), self.currentLevel)
+				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
+				self.gameInfoPanel3.update(tileType,self)
 			if keys == "up":
 				self.currentLevel.cursor.moveCursor((0,+1), self.currentLevel)
+				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
+				self.gameInfoPanel3.update(tileType,self)
 			if keys == "left":
 				self.currentLevel.cursor.moveCursor((-1,0), self.currentLevel)
+				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
+				self.gameInfoPanel3.update(tileType,self)
 			if keys == "right":
 				self.currentLevel.cursor.moveCursor((+1,0), self.currentLevel)
+				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
+				self.gameInfoPanel3.update(tileType,self)
 
 
 

@@ -21,6 +21,7 @@ class Cursor(pygame.sprite.Sprite):
 		self.mapSize = (currentLevel.size[1],currentLevel.size[0])
 		# POS IS SAVED AS XY, NOT YX.
 		self.pos = [0,0]
+		self.truePos = [self.pos[0]+currentLevel.boardViewTopLeft[0],self.pos[1]+currentLevel.boardViewTopLeft[1]]
 		self.rect = self.image.get_rect()
 		self.rect.topleft = (currentLevel.widthPad,currentLevel.heightPad)
 		self.tick = 0
@@ -42,7 +43,6 @@ class Cursor(pygame.sprite.Sprite):
 		newPos = [self.pos[0]+direc[0],self.pos[1]-direc[1]]
 		if (newPos[0]>=-1 and newPos[0]<self.mapSize[0] and
 			newPos[1]>=-1 and newPos[1]<self.mapSize[1]):
-			print self.mapSize, currentLevel.boardViewTopLeft
 			if (newPos[1]<11 and newPos[1]>=0 and
 				newPos[0]<20 and newPos[0]>=0):
 				self.pos = [self.pos[0]+direc[0],self.pos[1]-direc[1]]
@@ -55,6 +55,8 @@ class Cursor(pygame.sprite.Sprite):
 				currentLevel.boardViewTopLeft[0]+=1
 			elif newPos[0]==-1 and currentLevel.boardViewTopLeft[0]>0:
 				currentLevel.boardViewTopLeft[0]-=1
+			self.truePos = [self.pos[0]+currentLevel.boardViewTopLeft[0],self.pos[1]+currentLevel.boardViewTopLeft[1]]
+			print self.truePos
 
 
 
