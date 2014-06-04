@@ -52,9 +52,8 @@ class WaterEmblem(object):
 		self.musicPlaying = False
 
 	def fontInit(self):
-		#self.dialogueFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 16)
-		#self.nameFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 8)
-		pass
+		self.dialogueFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 16)
+		self.nameFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 8)
 
 	def configInit(self, config):
 		self.config = config
@@ -63,6 +62,43 @@ class WaterEmblem(object):
 		self.config["BGM"] = int(self.config["BGM"])/100.0
 
 	def guiInit(self):
+		class tileInit(object):
+			def __init__(self):
+				self.ocean = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "Ocean.png"))
+				self.oceanRect = self.ocean.get_rect()
+
+		self.gameBoardWin = pygame.Surface((640,352))
+		self.gameBoardWinRect = (0,0,640,352) #Topleft corner of gameBoardWin on the display surface to blit to
+		self.gameInfoWin = pygame.Surface((640,128))
+		self.gameInfoWinRect = (0,352,640,128) #Same as above
+		self.tiles = tileInit()
+		#panel 1
+		self.gameInfoPanel1 = pygame.Surface((128,128))
+		self.gameInfoPanel1.fill((255,255,255))
+		gameMenu = pygame.image.load(os.path.join(os.path.curdir,"img","menu","Temp Game Menu Button.png"))
+		fleetMenu = pygame.image.load(os.path.join(os.path.curdir,"img","menu","Temp Fleet Menu Button.png"))
+		self.gameInfoPanel1.blit(gameMenu, (0,0))
+		self.gameInfoPanel1.blit(fleetMenu, (0,20))
+		pygame.draw.rect(self.gameInfoPanel1, (0,0,0), (0,0,128,128), 1)
+		self.gameInfoPanel1Rect = (0,0,128,128)
+		#panel 2
+		self.gameInfoPanel2 = pygame.Surface((128,128))
+		self.gameInfoPanel2.fill((255,255,255))
+		pygame.draw.rect(self.gameInfoPanel2, (0,0,0), (0,0,128,128), 1)
+		self.gameInfoPanel2Rect = (128,0,128,128)
+		#panel 3
+		self.gameInfoPanel3 = gui.GameInfoPanel3()
+		self.gameInfoPanel3.update("ocean", self)
+		#panel 4
+		self.gameInfoPanel4 = pygame.Surface((128,128))
+		self.gameInfoPanel4.fill((255,255,255))
+		pygame.draw.rect(self.gameInfoPanel4, (0,0,0), (0,0,128,128), 1)
+		self.gameInfoPanel4Rect = (384,0,128,128)
+		#panel 5
+		self.gameInfoPanel5 = pygame.Surface((128,128))
+		self.gameInfoPanel5.fill((255,255,255))
+		pygame.draw.rect(self.gameInfoPanel5, (0,0,0), (0,0,128,128), 1)
+		self.gameInfoPanel5Rect = (512,0,128,128)
 		pass
 
 	def soundInit(self):
@@ -138,18 +174,46 @@ class WaterEmblem(object):
 
 	def playMusic(self, track):
 		if pygame.mixer.music.get_busy():
-			pygame.mixer.music.fadeout(1000)
+			pygame.mixer.music.fadeout(1000) 
 		pygame.mixer.music.load(track)
 		pygame.mixer.music.set_volume(self.config["BGM"])
 		pygame.mixer.music.play(-1)
 
 	def drawPlaying(self):
-		#Padding for centering maps smaller than the window
-		widthPad,heightPad = 0,0
-		if self.currentLevel.width<self.width: widthPad = (self.width-self.currentLevel.width)/2
-		if self.currentLevel.height<self.height: heightPad = (self.height-self.currentLevel.height)/2
-		self.win.blit(self.currentLevel.mapSurf, (widthPad,heightPad))
+		def drawBoardPanel():
+			#Padding for centering maps smaller than the window
+			widthPad,heightPad = 0,0
+			#because gameBoardWinRect is a Rect, 2nd and 3rd indices are the width and height.
+			if self.currentLevel.width<self.gameBoardWinRect[2]: widthPad = (self.width-self.currentLevel.width)/2
+			if self.currentLevel.height<self.gameBoardWinRect[3]: heightPad = (self.height-self.currentLevel.height)/2
+			self.gameBoardWin.blit(self.currentLevel.mapSurf, (widthPad,heightPad))
+		def drawInfoPanel():
+			def drawPanel1():
+				self.gameInfoWin.blit(self.gameInfoPanel1,self.gameInfoPanel1Rect)
+				pass
+			def drawPanel2():
+				self.gameInfoWin.blit(self.gameInfoPanel2,self.gameInfoPanel2Rect)
+				pass
+			def drawPanel3():
+				self.gameInfoWin.blit(self.gameInfoPanel3.fullSurf,self.gameInfoPanel3.rect)
+				pass
+			def drawPanel4():
+				self.gameInfoWin.blit(self.gameInfoPanel4,self.gameInfoPanel4Rect)
+				pass
+			def drawPanel5():
+				self.gameInfoWin.blit(self.gameInfoPanel5,self.gameInfoPanel5Rect)
+				pass
+			drawPanel1()
+			drawPanel2()
+			drawPanel3()
+			drawPanel4()
+			drawPanel5()
 
+		drawBoardPanel()
+		drawInfoPanel()
+
+		self.win.blit(self.gameBoardWin, self.gameBoardWinRect)
+		self.win.blit(self.gameInfoWin, self.gameInfoWinRect)
 
 	def drawEditor(self):
 		pass
