@@ -77,6 +77,14 @@ class Level(object):
 		pygame.draw.rect(self.oceanTile, (0,0,200), (0,0,32,32), 1)
 		self.shallowTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","shallow.png"))
 		pygame.draw.rect(self.shallowTile, (0,0,200), (0,0,32,32), 1)
+	############
+	#Eventually should modify code so it uses portraits from here and not from main.py. Bad organization.
+	############
+	#def tilePortraitInit(self):
+	#	self.ocean = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "actual_ocean.png"))
+	#	self.oceanRect = self.ocean.get_rect()
+	#	self.shallow = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "shallow.png"))
+	#	self.shallowRect = self.shallow.get_rect()
 	##############
 	## mapInit initializes the map and related data
 	##############

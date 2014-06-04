@@ -72,12 +72,17 @@ class WaterEmblem(object):
 				self.oceanRect = self.ocean.get_rect()
 				self.shallow = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "shallow.png"))
 				self.shallowRect = self.shallow.get_rect()
+		class kanmusuPortraitInit(object):
+			def __init__(self):
+				self.kaga = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "kaga.png"))
+				self.kagaRect = self.kaga.get_rect()
 
 		self.gameBoardWin = pygame.Surface((640,352))
 		self.gameBoardWinRect = (0,0,640,352) #Topleft corner of gameBoardWin on the display surface to blit to
 		self.gameInfoWin = pygame.Surface((640,128))
 		self.gameInfoWinRect = (0,352,640,128) #Same as above
 		self.tilePortraits = tilePortraitInit()
+		self.kanmusuPortraits = kanmusuPortraitInit()
 		#panel 1
 		self.gameInfoPanel1 = pygame.Surface((128,128))
 		self.gameInfoPanel1.fill((255,255,255))
@@ -101,10 +106,12 @@ class WaterEmblem(object):
 		pygame.draw.rect(self.gameInfoPanel4, (0,0,0), (0,0,128,128), 1)
 		self.gameInfoPanel4Rect = (384,0,128,128)
 		#panel 5
-		self.gameInfoPanel5 = pygame.Surface((128,128))
-		self.gameInfoPanel5.fill((255,255,255))
-		pygame.draw.rect(self.gameInfoPanel5, (0,0,0), (0,0,128,128), 1)
-		self.gameInfoPanel5Rect = (512,0,128,128)
+		self.gameInfoPanel5 = gui.GameInfoPanel5()
+		self.gameInfoPanel5.update("kaga", self)
+		#self.gameInfoPanel5 = pygame.Surface((128,128))
+		#self.gameInfoPanel5.fill((255,255,255))
+		#pygame.draw.rect(self.gameInfoPanel5, (0,0,0), (0,0,128,128), 1)
+		#self.gameInfoPanel5Rect = (512,0,128,128)
 		############################################################################
 		########### Entire above code should be looked at after UI is finalized ####
 		############################################################################
@@ -240,7 +247,7 @@ class WaterEmblem(object):
 			def drawPanel4():
 				self.gameInfoWin.blit(self.gameInfoPanel4,self.gameInfoPanel4Rect)
 			def drawPanel5():
-				self.gameInfoWin.blit(self.gameInfoPanel5,self.gameInfoPanel5Rect)
+				self.gameInfoWin.blit(self.gameInfoPanel5.fullSurf,self.gameInfoPanel5.rect)
 			drawPanel1()
 			drawPanel2()
 			drawPanel3()

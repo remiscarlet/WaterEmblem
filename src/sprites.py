@@ -56,7 +56,6 @@ class Cursor(pygame.sprite.Sprite):
 			elif newPos[0]==-1 and currentLevel.boardViewTopLeft[0]>0:
 				currentLevel.boardViewTopLeft[0]-=1
 			self.truePos = [self.pos[0]+currentLevel.boardViewTopLeft[0],self.pos[1]+currentLevel.boardViewTopLeft[1]]
-			print self.truePos
 
 
 
