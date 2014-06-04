@@ -188,13 +188,13 @@ class WaterEmblem(object):
 		self.playerUIGroup.update()
 		if keys != None:	
 			if keys == "down":
-				self.currentLevel.cursor.moveCursor((0,-1))
+				self.currentLevel.cursor.moveCursor((0,-1), self.currentLevel)
 			if keys == "up":
-				self.currentLevel.cursor.moveCursor((0,+1))
+				self.currentLevel.cursor.moveCursor((0,+1), self.currentLevel)
 			if keys == "left":
-				self.currentLevel.cursor.moveCursor((-1,0))
+				self.currentLevel.cursor.moveCursor((-1,0), self.currentLevel)
 			if keys == "right":
-				self.currentLevel.cursor.moveCursor((+1,0))
+				self.currentLevel.cursor.moveCursor((+1,0), self.currentLevel)
 
 
 
@@ -215,7 +215,11 @@ class WaterEmblem(object):
 
 	def drawPlaying(self):
 		def drawBoardPanel():
-			self.gameBoardWin.blit(self.currentLevel.mapSurf, (self.currentLevel.widthPad,self.currentLevel.heightPad))
+			boardTopLeft = self.currentLevel.boardViewTopLeft
+			width = self.currentLevel.width if self.currentLevel.width<640 else 640
+			height = self.currentLevel.height if self.currentLevel.height<352 else 352
+			topLeft = (boardTopLeft[0]*32,boardTopLeft[1]*32,width,height)
+			self.gameBoardWin.blit(self.currentLevel.mapSurf, (self.currentLevel.widthPad,self.currentLevel.heightPad), topLeft)
 		def drawInfoPanel():
 			def drawPanel1():
 				self.gameInfoWin.blit(self.gameInfoPanel1,self.gameInfoPanel1Rect)
