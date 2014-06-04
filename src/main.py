@@ -64,7 +64,7 @@ class WaterEmblem(object):
 	def guiInit(self):
 		class tileInit(object):
 			def __init__(self):
-				self.ocean = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "Ocean.png"))
+				self.ocean = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "actual_ocean.png"))
 				self.oceanRect = self.ocean.get_rect()
 
 		self.gameBoardWin = pygame.Surface((640,352))
