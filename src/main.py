@@ -47,8 +47,8 @@ class WaterEmblem(object):
 		self.ticks = 0 #Used for general events
 		self.win = pygame.Surface((640,480))
 		self.trueWin = win
-		self.status = {"menu":True, "options":False, "paused":False, "instructions":False,
-					   "editor":False, "playing":False, "gameOver":False, "gameWin":False}
+		self.status = {"menu":False, "options":False, "paused":False, "instructions":False,
+					   "editor":False, "playing":True, "gameOver":False, "gameWin":False}
 		self.musicPlaying = False
 
 	def fontInit(self):
@@ -61,6 +61,10 @@ class WaterEmblem(object):
 		self.config["SFX"] = int(self.config["SFX"])/100.0
 		self.config["BGM"] = int(self.config["BGM"])/100.0
 
+
+	############################################################################
+	########### Entire below code should be looked at after UI is finalized ####
+	############################################################################
 	def guiInit(self):
 		class tileInit(object):
 			def __init__(self):
@@ -99,7 +103,9 @@ class WaterEmblem(object):
 		self.gameInfoPanel5.fill((255,255,255))
 		pygame.draw.rect(self.gameInfoPanel5, (0,0,0), (0,0,128,128), 1)
 		self.gameInfoPanel5Rect = (512,0,128,128)
-		pass
+		############################################################################
+		########### Entire above code should be looked at after UI is finalized ####
+		############################################################################
 
 	def soundInit(self):
 		self.bgm = sounds.BGM()
@@ -114,12 +120,14 @@ class WaterEmblem(object):
 			pass
 		pygame.key.set_repeat(250, 50)
 
-	def spriteInit(self):
-		pass
-
 	def levelInit(self):
-		self.currentLevel = levels.Level()
+		self.currentLevel = levels.Level(self)
 
+	def spriteInit(self):
+		self.playerUIGroup = pygame.sprite.Group()
+		self.currentLevel.cursor = sprites.Cursor(self.currentLevel)
+		self.playerUIGroup.add(self.currentLevel.cursor)
+		pass
 	#############################
 	###### Events Handling ######
 	#############################
@@ -162,7 +170,8 @@ class WaterEmblem(object):
 		pass
 
 	def playingUpdate(self, keys):
-		pass
+		self.playerUIGroup.update()
+
 
 
 	#########################
@@ -181,28 +190,18 @@ class WaterEmblem(object):
 
 	def drawPlaying(self):
 		def drawBoardPanel():
-			#Padding for centering maps smaller than the window
-			widthPad,heightPad = 0,0
-			#because gameBoardWinRect is a Rect, 2nd and 3rd indices are the width and height.
-			if self.currentLevel.width<self.gameBoardWinRect[2]: widthPad = (self.width-self.currentLevel.width)/2
-			if self.currentLevel.height<self.gameBoardWinRect[3]: heightPad = (self.height-self.currentLevel.height)/2
-			self.gameBoardWin.blit(self.currentLevel.mapSurf, (widthPad,heightPad))
+			self.gameBoardWin.blit(self.currentLevel.mapSurf, (self.currentLevel.widthPad,self.currentLevel.heightPad))
 		def drawInfoPanel():
 			def drawPanel1():
 				self.gameInfoWin.blit(self.gameInfoPanel1,self.gameInfoPanel1Rect)
-				pass
 			def drawPanel2():
 				self.gameInfoWin.blit(self.gameInfoPanel2,self.gameInfoPanel2Rect)
-				pass
 			def drawPanel3():
 				self.gameInfoWin.blit(self.gameInfoPanel3.fullSurf,self.gameInfoPanel3.rect)
-				pass
 			def drawPanel4():
 				self.gameInfoWin.blit(self.gameInfoPanel4,self.gameInfoPanel4Rect)
-				pass
 			def drawPanel5():
 				self.gameInfoWin.blit(self.gameInfoPanel5,self.gameInfoPanel5Rect)
-				pass
 			drawPanel1()
 			drawPanel2()
 			drawPanel3()
@@ -214,6 +213,10 @@ class WaterEmblem(object):
 
 		self.win.blit(self.gameBoardWin, self.gameBoardWinRect)
 		self.win.blit(self.gameInfoWin, self.gameInfoWinRect)
+		for sprite in self.playerUIGroup:
+			self.win.blit(sprite.image,sprite.rect)
+			if isinstance(sprite, sprites.Cursor):
+				blit_alpha(self.win,sprite.white, sprite.rect, sprite.alpha)
 
 	def drawEditor(self):
 		pass
@@ -238,7 +241,7 @@ class WaterEmblem(object):
 
 	def run(self):
 		while self.isRunning == True:
-			self.clock.tick(60)
+			self.clock.tick(30)
 			self.ticks += 1
 			self.events()
 			self.redrawAll()

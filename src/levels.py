@@ -62,13 +62,13 @@ TESTMAPUNITPOS2 = [[' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','A','B',],
 
 
 class Level(object):
-	def __init__(self):
-		self.mapInit()
+	def __init__(self, this):
+		self.mapInit(this)
 
 	##############
 	## mapInit initializes the map and related data
 	##############
-	def mapInit(self):
+	def mapInit(self, this):
 		self.map = TESTMAP2
 		self.unitPos = TESTMAPUNITPOS2
 		self.playerPos = self.getShipPos()
@@ -77,14 +77,20 @@ class Level(object):
 		self.width = self.size[1]*32
 		self.height = self.size[0]*32
 		self.mapSurf = self.drawMap() #Makes a map surface the size of the map with 32x32 being the size of one tile
+		self.widthPad,self.heightPad = 0,0
+		#because gameBoardWinRect is a Rect, 2nd and 3rd indices are the width and height.
+		#self = this class. this = parent class. Horrible code. Will fix later.
+		if self.width<this.gameBoardWinRect[2]: self.widthPad = (this.width-self.width)/2
+		if self.height<this.gameBoardWinRect[3]: self.heightPad = (this.height-self.height)/2
 
 	###############
 	## drawMap will take the map symbols and draw it as an actual pygame surface
 	###############
 	def drawMap(self):
 		win = pygame.Surface((32*self.size[1],32*self.size[0]))
-		oceanTile = pygame.Surface((32,32))
-		oceanTile.fill((0,0,150))
+		#oceanTile = pygame.Surface((32,32))
+		#oceanTile.fill((0,0,150))
+		oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","ocean.png"))
 		pygame.draw.rect(oceanTile, (0,0,200), (0,0,32,32), 1)
 		for row in xrange(len(self.map)):
 			for col in xrange(len(self.map[0])):

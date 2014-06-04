@@ -1,3 +1,6 @@
 6/3/2014 - Remi
 	- Added basic map initialization with a dummy map. 
 	- Very crude and basic map drawing with no textures. (Solid colors)
+	- Added area at bottom for UI. Gamescreen is now split into the game's "board" and "info" sections.
+	- Some kind of base class for info UI manipulation
+	- Proposal UI storyboards
