@@ -38,23 +38,12 @@ class Cursor(pygame.sprite.Sprite):
 	#############
 	## Supplied dir should be a tuple with direction. Eg, (0,1), (-1,+1), (1,0), etc
 	#############
-	def moveCursor(self, direc, currentLevel):
+	def moveCursor(self, direc):
 		newPos = [self.pos[0]+direc[0],self.pos[1]-direc[1]]
-		if (newPos[0]>=-1 and newPos[0]<self.mapSize[0] and
-			newPos[1]>=-1 and newPos[1]<self.mapSize[1]):
-			print self.mapSize, currentLevel.boardViewTopLeft
-			if (newPos[1]<11 and newPos[1]>=0 and
-				newPos[0]<20 and newPos[0]>=0):
-				self.pos = [self.pos[0]+direc[0],self.pos[1]-direc[1]]
-				self.rect.topleft = (self.rect.left+32*direc[0],self.rect.top-32*direc[1])
-			elif newPos[1]>=11 and currentLevel.boardViewTopLeft[1]<self.mapSize[1]-11:
-				currentLevel.boardViewTopLeft[1]+=1
-			elif newPos[1]==-1 and currentLevel.boardViewTopLeft[1]>0:
-				currentLevel.boardViewTopLeft[1]-=1
-			elif newPos[0]>=20 and currentLevel.boardViewTopLeft[0]<self.mapSize[0]-20:
-				currentLevel.boardViewTopLeft[0]+=1
-			elif newPos[0]==-1 and currentLevel.boardViewTopLeft[0]>0:
-				currentLevel.boardViewTopLeft[0]-=1
+		if (newPos[0]>=0 and newPos[0]<self.mapSize[0] and
+			newPos[1]>=0 and newPos[1]<11):
+			self.pos = [self.pos[0]+direc[0],self.pos[1]-direc[1]]
+			self.rect.topleft = (self.rect.left+32*direc[0],self.rect.top-32*direc[1])
 
 
 
