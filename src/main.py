@@ -202,6 +202,7 @@ class WaterEmblem(object):
 	def playingUpdate(self, keys=None):
 		self.playerUIGroup.update()
 		self.gameInfoPanel2.update(self.currentLevel)
+		cursor = self.currentLevel.cursor
 		if keys != None:
 			up = keys[self.upKey]
 			down = keys[self.downKey]
@@ -210,20 +211,20 @@ class WaterEmblem(object):
 			confirm = keys[self.confirmKey]
 			cancel = keys[self.cancelKey]
 			if down:
-				self.currentLevel.cursor.moveCursor((0,-1), self.currentLevel)
-				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
+				cursor.moveCursor((0,-1), self.currentLevel)
+				tileType = self.currentLevel.map[cursor.truePos[1]][cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
 			if up:
-				self.currentLevel.cursor.moveCursor((0,+1), self.currentLevel)
-				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
+				cursor.moveCursor((0,+1), self.currentLevel)
+				tileType = self.currentLevel.map[cursor.truePos[1]][cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
 			if left:
-				self.currentLevel.cursor.moveCursor((-1,0), self.currentLevel)
-				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
+				cursor.moveCursor((-1,0), self.currentLevel)
+				tileType = self.currentLevel.map[cursor.truePos[1]][cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
 			if right:
-				self.currentLevel.cursor.moveCursor((+1,0), self.currentLevel)
-				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
+				cursor.moveCursor((+1,0), self.currentLevel)
+				tileType = self.currentLevel.map[cursor.truePos[1]][cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
 			if confirm:
 				#if no kanmusu are currently selected
@@ -231,13 +232,17 @@ class WaterEmblem(object):
 					#go through each kanmusu and find one that...
 					for kanmusu in self.currentLevel.kanmusuDict:
 						#matches our current cursor position if any do at all
-						if self.currentLevel.kanmusuDict[kanmusu].pos == self.currentLevel.cursor.truePos:
+						if self.currentLevel.kanmusuDict[kanmusu].pos == cursor.truePos:
 							#and make that our current "selected" kanmusu
 							self.currentLevel.selectedKanmusu = kanmusu
 				#if a kanmusu is already selected (eg, we're moving her)
 				elif self.currentLevel.selectedKanmusu != None:
 					kanmusu = self.currentLevel.selectedKanmusu
-					self.currentLevel.kanmusuDict[kanmusu].pos = self.currentLevel.cursor.truePos
+					positions = list()
+					for ship in self.currentLevel.kanmusuDict:
+						positions.append(self.currentLevel.kanmusuDict[ship].pos)
+					if cursor.truePos not in positions or cursor.truePos == self.currentLevel.kanmusuDict[kanmusu].pos:
+						self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
 					self.currentLevel.selectedKanmusu = None
 
 
