@@ -127,17 +127,23 @@ class WaterEmblem(object):
 		self.sfx.setVolume(self.config["SFX"])
 
 	def keyInit(self, config):
+		self.confirmHeld = False
+		self.cancelHeld = False
 		try:
 			self.leftKey = int(eval("pygame."+config["Left"]))
 			self.rightKey = int(eval("pygame."+config["Right"]))
 			self.upKey = int(eval("pygame."+config["Up"]))
 			self.downKey = int(eval("pygame."+config["Down"]))
+			self.confirmKey = int(eval("pygame."+config["Confirm"]))
+			self.cancelKey = int(eval("pygame."+config["Cancel"]))
 		except:
 			config = remakeConfig()
 			self.leftKey = int(eval("pygame."+config["Left"]))
 			self.rightKey = int(eval("pygame."+config["Right"]))
 			self.upKey = int(eval("pygame."+config["Up"]))
 			self.downKey = int(eval("pygame."+config["Down"]))
+			self.confirmKey = int(eval("pygame."+config["Confirm"]))
+			self.cancelKey = int(eval("pygame."+config["Cancel"]))
 		pygame.key.set_repeat(100, 50)
 
 	def spriteInit(self):
@@ -155,13 +161,15 @@ class WaterEmblem(object):
 		if self.status["playing"]: self.playingUpdate()
 		#for all other events
 		for event in pygame.event.get():
+			#print event
 			#quit when x button is pressed
 			if event.type == pygame.QUIT: self.isRunning = False
 			#check that the event has attr of key to prevent crashes
 			if hasattr(event, 'key'):
 				keys = pygame.key.get_pressed()
 				if (event.key == self.upKey or event.key == self.downKey or
-					event.key == self.leftKey or event.key == self.rightKey):
+					event.key == self.leftKey or event.key == self.rightKey or
+					event.key == self.confirmKey or event.key == self.cancelKey):
 					if self.status["playing"]: self.playingUpdate(keys)
 
 
@@ -199,6 +207,8 @@ class WaterEmblem(object):
 			down = keys[self.downKey]
 			left = keys[self.leftKey]
 			right = keys[self.rightKey]
+			confirm = keys[self.confirmKey]
+			cancel = keys[self.cancelKey]
 			if down:
 				self.currentLevel.cursor.moveCursor((0,-1), self.currentLevel)
 				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
@@ -215,6 +225,22 @@ class WaterEmblem(object):
 				self.currentLevel.cursor.moveCursor((+1,0), self.currentLevel)
 				tileType = self.currentLevel.map[self.currentLevel.cursor.truePos[1]][self.currentLevel.cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
+			if confirm:
+				#if no kanmusu are currently selected
+				if self.currentLevel.selectedKanmusu == None:
+					#go through each kanmusu and find one that...
+					for kanmusu in self.currentLevel.kanmusuDict:
+						#matches our current cursor position if any do at all
+						if self.currentLevel.kanmusuDict[kanmusu].pos == self.currentLevel.cursor.truePos:
+							#and make that our current "selected" kanmusu
+							self.currentLevel.selectedKanmusu = kanmusu
+				#if a kanmusu is already selected (eg, we're moving her)
+				elif self.currentLevel.selectedKanmusu != None:
+					kanmusu = self.currentLevel.selectedKanmusu
+					self.currentLevel.kanmusuDict[kanmusu].pos = self.currentLevel.cursor.truePos
+					self.currentLevel.selectedKanmusu = None
+
+
 
 
 
@@ -240,6 +266,16 @@ class WaterEmblem(object):
 			height = self.currentLevel.height if self.currentLevel.height<352 else 352
 			topLeft = (boardTopLeft[0]*32,boardTopLeft[1]*32,width,height)
 			self.gameBoardWin.blit(self.currentLevel.mapSurf, (self.currentLevel.widthPad,self.currentLevel.heightPad), topLeft)
+			for kanmusu in self.currentLevel.kanmusuDict:
+				#print kanmusu
+				ship = self.currentLevel.kanmusuDict[kanmusu]
+				pos = ship.pos
+				topleft = (pos[0]*32,pos[1]*32)
+				self.gameBoardWin.blit(ship.sprite.image,topleft)
+			#ship = self.currentLevel.kanmusuDict["kaga"]
+			#pos = ship.pos
+			#topleft = (pos[0]*32,pos[1]*32)
+			#self.gameBoardWin.blit(ship.sprite.image,topleft)
 		def drawInfoPanel():
 			def drawPanel1():
 				self.gameInfoWin.blit(self.gameInfoPanel1,self.gameInfoPanel1Rect)

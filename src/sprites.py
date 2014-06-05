@@ -10,6 +10,7 @@ import random
 class UnitSprite(pygame.sprite.Sprite):
 	def __init__(self, kanmusu):
 		pygame.sprite.Sprite.__init__(self)
+		self.image = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu sprites",kanmusu+".png"))
 
 class Cursor(pygame.sprite.Sprite):
 	def __init__(self, currentLevel):

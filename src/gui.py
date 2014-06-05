@@ -108,7 +108,6 @@ class GameInfoPanel4(object):
 			val = str(eval("this.currentLevel.kanmusuDict[kanmusu]."+key))
 			tempText = this.dialogueFont.render(val, True, (0,0,0))
 			self.fullSurf.blit(tempText, self.statRect[key])
-			print val
 		self.fullSurf.blit(self.borderTemplate, (0,0))
 
 

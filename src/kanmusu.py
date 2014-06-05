@@ -9,7 +9,7 @@ import sprites
 
 class Kanmusu(object):
 	#kanmusu should be supplied in a lowercase name of kanmusu
-	def __init__(self, kanmusu):
+	def __init__(self, kanmusu, pos):
 		#Once we have a file with all the numbers, I'll pull it from there. For now, hardcoded.
 		self.hp = 79
 		self.armor = 51
@@ -27,6 +27,7 @@ class Kanmusu(object):
 		self.remodel = 30
 		self.fuel = 100
 		self.ammo = 130
+		self.pos = pos
 		self.miniPortrait = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits","kaga.png"))
-		self.name = "Kaga"
-		self.sprites = sprites.UnitSprite("kaga")
+		self.name = kanmusu.capitalize()
+		self.sprite = sprites.UnitSprite(kanmusu)

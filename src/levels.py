@@ -74,12 +74,14 @@ class Level(object):
 		self.tileInit()
 		self.mapInit(this)
 		self.spriteInit()
+		self.varInit()
 
 	def tileInit(self):
 		self.oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","ocean.png"))
 		pygame.draw.rect(self.oceanTile, (0,0,200), (0,0,32,32), 1)
 		self.shallowTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","shallow.png"))
 		pygame.draw.rect(self.shallowTile, (0,0,200), (0,0,32,32), 1)
+
 	############
 	#Eventually should modify code so it uses portraits from here and not from main.py. Bad organization.
 	############
@@ -113,8 +115,12 @@ class Level(object):
 	def spriteInit(self):
 		self.kanmusuDict = dict()
 		for key in self.playerPos:
-			self.kanmusuDict[TESTUNITLIST[key]] = kanmusu.Kanmusu(TESTUNITLIST[key])
-		print self.kanmusuDict
+			
+			self.kanmusuDict[key] = kanmusu.Kanmusu(key,self.playerPos[key])
+			
+	def varInit(self):
+		self.selectedKanmusu = None
+
 	###############
 	## drawMap will take the map symbols and draw it as an actual pygame surface
 	###############
@@ -154,7 +160,7 @@ class Level(object):
 			for col in xrange(len(self.unitPos[row])):
 				val =  self.unitPos[row][col]
 				if whichPlayer == 0 and val.isdigit():
-					pos[val] = [row,col] #ROW COL -> Y X. NOTE THE INVERTED ORDER
+					pos[TESTUNITLIST[val]] = [row,col] #ROW COL -> Y X. NOTE THE INVERTED ORDER
 				if whichPlayer == 1 and val.isalpha():
-					pos[val] = [row,col] #ROW COL -> Y X. NOTE THE INVERTED ORDER
+					pos[TESTUNITLIST[val]] = [row,col] #ROW COL -> Y X. NOTE THE INVERTED ORDER
 		return pos

@@ -11,3 +11,6 @@
 	- Fixed event handling to process diagonal/multi-key inputs
 	- Minimap
 	- Minimap scrolling
+	- Added stats display and whatnot
+	- Added displaying (horrible) sprites of kanmusu
+	- Kanmusu are now movable. (But buggy)(Can stack)

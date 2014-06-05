@@ -23,6 +23,8 @@ Keybindings:
 	Down: K_DOWN
 	Left: K_LEFT
 	Right: K_RIGHT
+	Confirm: K_z
+	Cancel: K_x
 '''
 
 def getListOfVals(defVal):
