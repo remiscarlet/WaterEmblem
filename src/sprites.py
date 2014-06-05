@@ -7,6 +7,10 @@ import pygame
 import math
 import random
 
+class UnitSprite(pygame.sprite.Sprite):
+	def __init__(self, kanmusu):
+		pygame.sprite.Sprite.__init__(self)
+
 class Cursor(pygame.sprite.Sprite):
 	def __init__(self, currentLevel):
 		pygame.sprite.Sprite.__init__(self)

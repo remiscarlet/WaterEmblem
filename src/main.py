@@ -108,10 +108,8 @@ class WaterEmblem(object):
 		self.gameInfoPanel3 = gui.GameInfoPanel3()
 		self.gameInfoPanel3.update("o", self)
 		#panel 4
-		self.gameInfoPanel4 = pygame.Surface((128,128))
-		self.gameInfoPanel4.fill((255,255,255))
-		pygame.draw.rect(self.gameInfoPanel4, (0,0,0), (0,0,128,128), 1)
-		self.gameInfoPanel4Rect = (384,0,128,128)
+		self.gameInfoPanel4 = gui.GameInfoPanel4()
+		self.gameInfoPanel4.update("kaga", self)
 		#panel 5
 		self.gameInfoPanel5 = gui.GameInfoPanel5()
 		self.gameInfoPanel5.update("kaga", self)
@@ -140,7 +138,7 @@ class WaterEmblem(object):
 			self.rightKey = int(eval("pygame."+config["Right"]))
 			self.upKey = int(eval("pygame."+config["Up"]))
 			self.downKey = int(eval("pygame."+config["Down"]))
-		pygame.key.set_repeat(150, 50)
+		pygame.key.set_repeat(100, 50)
 
 	def spriteInit(self):
 		self.playerUIGroup = pygame.sprite.Group()
@@ -250,7 +248,7 @@ class WaterEmblem(object):
 			def drawPanel3():
 				self.gameInfoWin.blit(self.gameInfoPanel3.fullSurf,self.gameInfoPanel3.rect)
 			def drawPanel4():
-				self.gameInfoWin.blit(self.gameInfoPanel4,self.gameInfoPanel4Rect)
+				self.gameInfoWin.blit(self.gameInfoPanel4.fullSurf,self.gameInfoPanel4.rect)
 			def drawPanel5():
 				self.gameInfoWin.blit(self.gameInfoPanel5.fullSurf,self.gameInfoPanel5.rect)
 			drawPanel1()
