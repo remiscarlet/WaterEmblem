@@ -77,9 +77,9 @@ class Level(object):
 		self.varInit()
 
 	def tileInit(self):
-		self.oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","ocean.png"))
+		self.oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","actual_ocean.png"))
 		pygame.draw.rect(self.oceanTile, (0,0,200), (0,0,32,32), 1)
-		self.shallowTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","shallow.png"))
+		self.shallowTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","actual_shallow.png"))
 		pygame.draw.rect(self.shallowTile, (0,0,200), (0,0,32,32), 1)
 
 	############

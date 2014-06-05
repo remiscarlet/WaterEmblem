@@ -80,7 +80,7 @@ class WaterEmblem(object):
 			def __init__(self):
 				self.ocean = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "actual_ocean.png"))
 				self.oceanRect = self.ocean.get_rect()
-				self.shallow = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "shallow.png"))
+				self.shallow = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "actual_shallow.png"))
 				self.shallowRect = self.shallow.get_rect()
 		class kanmusuPortraitInit(object):
 			def __init__(self):
