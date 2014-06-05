@@ -110,8 +110,8 @@ class Level(object):
 		self.boardViewTopLeft = [0,0]
 		#because gameBoardWinRect is a Rect, 2nd and 3rd indices are the width and height.
 		#self = this class. this = parent class. Horrible code. Will fix later.
-		if self.width<this.gameBoardWinRect[2]: self.widthPad = (this.width-self.width)/2
-		if self.height<this.gameBoardWinRect[3]: self.heightPad = (this.height-self.height)/2
+		if self.width<this.gameBoardWinRect[2]: self.widthPad = (this.gameBoardWinRect[2]-self.width)/2
+		if self.height<this.gameBoardWinRect[3]: self.heightPad = (this.gameBoardWinRect[3]-self.height)/2
 
 	def spriteInit(self):
 		self.kanmusuDict = dict()

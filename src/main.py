@@ -91,9 +91,19 @@ class WaterEmblem(object):
 				self.taihouRect = self.taihou.get_rect()
 				self.kongou = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "kongou.png"))
 				self.kongouRect = self.kongou.get_rect()
+		# overlay tiles
+		self.movableTileOverlay = pygame.Surface((32,32), pygame.SRCALPHA, 32).convert_alpha()
+		self.unmovableTileOverlay = pygame.Surface((32,32), pygame.SRCALPHA, 32).convert_alpha()
+		blue = pygame.Surface((32,32))
+		blue.fill((0,0,150))
+		red = pygame.Surface((32,32))
+		red.fill((150,0,0))
+		blit_alpha(self.movableTileOverlay,blue,(0,0),100)
+		blit_alpha(self.unmovableTileOverlay,red,(0,0),100)
+		####
 		self.tilePortraits = tilePortraitInit()
 		self.kanmusuPortraits = kanmusuPortraitInit()
-		#panel 1
+		# panel 1
 		self.gameInfoPanel1 = pygame.Surface((128,128))
 		self.gameInfoPanel1.fill((255,255,255))
 		gameMenu = pygame.image.load(os.path.join(os.path.curdir,"img","menu","Temp Game Menu Button.png"))
@@ -102,26 +112,18 @@ class WaterEmblem(object):
 		self.gameInfoPanel1.blit(fleetMenu, (0,20))
 		pygame.draw.rect(self.gameInfoPanel1, (0,0,0), (0,0,128,128), 1)
 		self.gameInfoPanel1Rect = (0,0,128,128)
-		#panel 2
-		#self.gameInfoPanel2 = pygame.Surface((128,128))
-		#self.gameInfoPanel2.fill((255,255,255))
-		#pygame.draw.rect(self.gameInfoPanel2, (0,0,0), (0,0,128,128), 1)
-		#self.gameInfoPanel2Rect = (128,0,128,128)
+		# panel 2
 		self.gameInfoPanel2 = gui.GameInfoPanel2(self.currentLevel)
 		self.gameInfoPanel2.update(self.currentLevel)
-		#panel 3
+		# panel 3
 		self.gameInfoPanel3 = gui.GameInfoPanel3()
 		self.gameInfoPanel3.update("o", self)
-		#panel 4
+		# panel 4
 		self.gameInfoPanel4 = gui.GameInfoPanel4()
 		self.gameInfoPanel4.update("kaga", self)
-		#panel 5
+		# panel 5
 		self.gameInfoPanel5 = gui.GameInfoPanel5()
 		self.gameInfoPanel5.update("kaga", self)
-		#self.gameInfoPanel5 = pygame.Surface((128,128))
-		#self.gameInfoPanel5.fill((255,255,255))
-		#pygame.draw.rect(self.gameInfoPanel5, (0,0,0), (0,0,128,128), 1)
-		#self.gameInfoPanel5Rect = (512,0,128,128)
 		############################################################################
 		########### Entire above code should be looked at after UI is finalized ####
 		############################################################################
@@ -223,7 +225,8 @@ class WaterEmblem(object):
 				tileType = self.currentLevel.map[cursor.truePos[1]][cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
 				for kanmusu in self.currentLevel.kanmusuDict:
-					if self.currentLevel.kanmusuDict[kanmusu].pos == cursor.truePos:
+					if (self.currentLevel.kanmusuDict[kanmusu].pos == cursor.truePos and
+						self.currentLevel.selectedKanmusu == None):
 						self.gameInfoPanel4.update(kanmusu, self)
 						self.gameInfoPanel5.update(kanmusu, self)
 			if confirm:
@@ -241,8 +244,10 @@ class WaterEmblem(object):
 					positions = list()
 					for ship in self.currentLevel.kanmusuDict:
 						positions.append(self.currentLevel.kanmusuDict[ship].pos)
-					if cursor.truePos not in positions or cursor.truePos == self.currentLevel.kanmusuDict[kanmusu].pos:
-						self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
+					kanmusuStats = self.currentLevel.kanmusuDict[kanmusu]
+					if cursor.truePos not in positions or cursor.truePos == kanmusuStats.pos:
+						if getDisplacement(cursor.truePos,kanmusuStats.pos)<=kanmusuStats.speed:
+							self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
 					self.currentLevel.selectedKanmusu = None
 
 
@@ -277,6 +282,7 @@ class WaterEmblem(object):
 			width = self.currentLevel.width if self.currentLevel.width<640 else 640
 			height = self.currentLevel.height if self.currentLevel.height<352 else 352
 			topLeft = (boardTopLeft[0]*32,boardTopLeft[1]*32,width,height)
+			drawMovableTileOverlay()
 			self.gameBoardWin.blit(self.currentLevel.mapSurf, (self.currentLevel.widthPad,self.currentLevel.heightPad), topLeft)
 			#ship = self.currentLevel.kanmusuDict["kaga"]
 			#pos = ship.pos
@@ -298,6 +304,36 @@ class WaterEmblem(object):
 			drawPanel3()
 			drawPanel4()
 			drawPanel5()
+		def drawMovableTileOverlay():
+			def overlayTile(row,col,movable=True):
+				if movable: self.currentLevel.mapSurf.blit(self.movableTileOverlay,(row*32,col*32))
+				if not movable: self.currentLevel.mapSurf.blit(self.unmovableTileOverlay,(row*32,col*32))
+			def floodFillOverlay(row,col,startPos,maxDisplacement,kanmusuPos):
+				if (getDisplacement((row,col),startPos)<=maxDisplacement and
+					[row,col] not in filledPos):
+					filledPos.append([row,col])
+					if [row,col] not in kanmusuPos: overlayTile(row,col,True)
+					else: overlayTile(row,col,False)
+					floodFillOverlay(row+1,col,startPos,dist, kanmusuPos)
+					floodFillOverlay(row-1,col,startPos,dist, kanmusuPos)
+					floodFillOverlay(row,col+1,startPos,dist, kanmusuPos)
+					floodFillOverlay(row,col-1,startPos,dist, kanmusuPos)
+
+
+			if self.currentLevel.selectedKanmusu != None:
+				kanmusu = self.currentLevel.selectedKanmusu
+				kanmusuPos = list()
+				for key in self.currentLevel.kanmusuDict:
+					if key != kanmusu: kanmusuPos.append(self.currentLevel.kanmusuDict[key].pos)
+				dist = self.currentLevel.kanmusuDict[kanmusu].speed
+				startPos = self.currentLevel.kanmusuDict[kanmusu].pos
+				filledPos = list()
+				print kanmusuPos
+				floodFillOverlay(startPos[0],startPos[1],startPos,dist,kanmusuPos)
+				#print filledPos
+
+
+
 
 		drawBoardPanel()
 		drawInfoPanel()
@@ -378,6 +414,12 @@ def run():
 #########################
 ##### Helper Funcs ######
 #########################
+#pos1 and pos2 should both be a list or tuple with two indexes, an x and y.
+def getDisplacement(pos1,pos2):
+	dy = pos1[1]-pos2[1]
+	dx = pos1[0]-pos2[0]
+	displacement = abs(dy)+abs(dx)
+	return displacement
 
 def remakeConfig():
 	config = dict()

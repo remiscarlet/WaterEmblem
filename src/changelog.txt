@@ -4,6 +4,7 @@
 	- Added area at bottom for UI. Gamescreen is now split into the game's "board" and "info" sections.
 	- Some kind of base class for info UI manipulation
 	- Proposal UI storyboards
+
 6/4/2014 - Remi
 	- Map scrolling
 	- Terrain info based on cursor position
@@ -15,3 +16,8 @@
 	- Added displaying (horrible) sprites of kanmusu
 	- Kanmusu are now movable. (But buggy)(Can stack)
 	- Kanmusu don't stack by accident now wheee
+
+6/5/2014 - Remi
+	- Kanmusu's movable distance limited by speed stat.
+	- When moving kanmusu, movable tiles are highlighted blue
+	- When moving kanmusu, unmovable tiles are highlighted red
