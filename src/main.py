@@ -54,6 +54,7 @@ class WaterEmblem(object):
 
 	def fontInit(self):
 		self.dialogueFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 16)
+		self.statFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 14)
 		self.nameFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 8)
 
 	def configInit(self, config):
@@ -86,6 +87,10 @@ class WaterEmblem(object):
 			def __init__(self):
 				self.kaga = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "kaga.png"))
 				self.kagaRect = self.kaga.get_rect()
+				self.taihou = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "taihou.png"))
+				self.taihouRect = self.taihou.get_rect()
+				self.kongou = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "kongou.png"))
+				self.kongouRect = self.kongou.get_rect()
 		self.tilePortraits = tilePortraitInit()
 		self.kanmusuPortraits = kanmusuPortraitInit()
 		#panel 1
@@ -210,22 +215,17 @@ class WaterEmblem(object):
 			right = keys[self.rightKey]
 			confirm = keys[self.confirmKey]
 			cancel = keys[self.cancelKey]
-			if down:
-				cursor.moveCursor((0,-1), self.currentLevel)
+			if down or up or left or right:
+				if down: cursor.moveCursor((0,-1), self.currentLevel)
+				if up: cursor.moveCursor((0,+1), self.currentLevel)
+				if left: cursor.moveCursor((-1,0), self.currentLevel)
+				if right: cursor.moveCursor((+1,0), self.currentLevel)
 				tileType = self.currentLevel.map[cursor.truePos[1]][cursor.truePos[0]]
 				self.gameInfoPanel3.update(tileType,self)
-			if up:
-				cursor.moveCursor((0,+1), self.currentLevel)
-				tileType = self.currentLevel.map[cursor.truePos[1]][cursor.truePos[0]]
-				self.gameInfoPanel3.update(tileType,self)
-			if left:
-				cursor.moveCursor((-1,0), self.currentLevel)
-				tileType = self.currentLevel.map[cursor.truePos[1]][cursor.truePos[0]]
-				self.gameInfoPanel3.update(tileType,self)
-			if right:
-				cursor.moveCursor((+1,0), self.currentLevel)
-				tileType = self.currentLevel.map[cursor.truePos[1]][cursor.truePos[0]]
-				self.gameInfoPanel3.update(tileType,self)
+				for kanmusu in self.currentLevel.kanmusuDict:
+					if self.currentLevel.kanmusuDict[kanmusu].pos == cursor.truePos:
+						self.gameInfoPanel4.update(kanmusu, self)
+						self.gameInfoPanel5.update(kanmusu, self)
 			if confirm:
 				#if no kanmusu are currently selected
 				if self.currentLevel.selectedKanmusu == None:

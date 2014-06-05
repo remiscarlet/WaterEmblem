@@ -93,6 +93,8 @@ class GameInfoPanel4(object):
 		self.iconRect = dict()
 		self.stats = dict()
 		self.statRect = dict()
+		self.iconSurf = pygame.Surface((128,128))
+		self.iconSurf.fill((255,255,255))
 		iconList = ["hp","armor","evasion","asw","firepower","torpedo","aa","los"]
 		for i in xrange(len(iconList)):
 			icon = iconList[i]
@@ -100,13 +102,14 @@ class GameInfoPanel4(object):
 			self.stats[icon] = 0
 			self.statRect[icon] = ((i/4)*64+32,(i%4)*32+8,16,16)
 			self.iconRect[icon] = ((i/4)*64+8,(i%4)*32+8,16,16)
-			self.fullSurf.blit(self.icons[icon],self.iconRect[icon])
+			self.iconSurf.blit(self.icons[icon],self.iconRect[icon])
 
 
 	def update(self, kanmusu, this):
+		self.fullSurf.blit(self.iconSurf,(0,0))
 		for key in self.stats:
 			val = str(eval("this.currentLevel.kanmusuDict[kanmusu]."+key))
-			tempText = this.dialogueFont.render(val, True, (0,0,0))
+			tempText = this.statFont.render(val, True, (0,0,0))
 			self.fullSurf.blit(tempText, self.statRect[key])
 		self.fullSurf.blit(self.borderTemplate, (0,0))
 
@@ -137,6 +140,7 @@ class GameInfoPanel5(object):
 		padding = (128-width)/2
 		self.titleSurf.fill((255,255,255))
 		self.titleSurf.blit(tempText, (padding,0))
+		self.imageSurf.fill((0,0,0))
 		self.imageSurf.blit(eval("this.kanmusuPortraits."+kanmusu), (0,0))
 		self.drawPanel()
 
