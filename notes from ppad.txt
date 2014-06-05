@@ -1,27 +1,32 @@
 terrain type
-Ocean
-Shallow water
-Reefs (coral)
-Whirlpools (Visible only from certain distances)(enhanced by LoS)
-Beach -> Sea -> land or vice versa
-Dams? -> Destroy to traverse after x turns 
-Flatland
-Cliffs near water -> Can't move onto this tile from sea, blocks vision from sea 
-(Maybe bonus when firing onto sea from cliff)
-Mountain -> Untraversible. Blocks vision to ships.
-Forest -> can only fire adjacently to plains if at edge, but otherwise cannot fire from at all
+	Ocean
+	Shallow water
+	Reefs (coral)
+	Whirlpools (Visible only from certain distances)(enhanced by LoS)
+	Beach -> Sea -> land or vice versa
+	Dams? -> Destroy to traverse after x turns 
+	Flatland
+	Cliffs near water -> Can't move onto this tile from sea, blocks vision from sea 
+	(Maybe bonus when firing onto sea from cliff)
+	Mountain -> Untraversible. Blocks vision to ships.
+	Forest -> can only fire adjacently to plains if at edge, but otherwise cannot fire from at all
+
 Mechanics:
-LoS (Fog of War)
-Relationship status? <- stat boosts and whatnot for better relation
-Repairs/Construction instant, resource costs
-stacked units -> show the plane on top (slightly opaque) with obscured kanmusu underneath
+	LoS (Fog of War)
+	Relationship status? <- stat boosts and whatnot for better relation
+	Repairs/Construction instant, resource costs
+	stacked units -> show the plane on top (slightly opaque) with obscured kanmusu underneath
+	lighter units (DD, CL, etc)
+	perhaps consider own units are not passable (enemy units obviously not possible) 
+
 Mission Types:
-Attack an enemy fleet [Deathmatch]
-Defend base
-Support land-based forces
-Attack enemy base
-Escape
+	Attack an enemy fleet [Deathmatch]
+	Defend base
+	Support land-based forces
+	Attack enemy base
+	Escape
+
 M-level: (Subject to change)
-I'm not -> Your kanmusus cannot die
-do-emu -> Kancolle type death
-Tenshi -> Kanmusus can die mid-combat (even if they were undamaged at the start)
+	I'm not -> Your kanmusus cannot die
+	do-emu -> Kancolle type death
+	Tenshi -> Kanmusus can die mid-combat (even if they were undamaged at the start)
