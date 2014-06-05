@@ -328,7 +328,6 @@ class WaterEmblem(object):
 				dist = self.currentLevel.kanmusuDict[kanmusu].speed
 				startPos = self.currentLevel.kanmusuDict[kanmusu].pos
 				filledPos = list()
-				print kanmusuPos
 				floodFillOverlay(startPos[0],startPos[1],startPos,dist,kanmusuPos)
 				#print filledPos
 
@@ -420,6 +419,14 @@ def getDisplacement(pos1,pos2):
 	dx = pos1[0]-pos2[0]
 	displacement = abs(dy)+abs(dx)
 	return displacement
+
+def getMovementCost(pos1,pos2):
+	pass
+	#FUCK THIS HAS TO BE RECURSIVE DOESN'T IT GOD DAMMIT
+
+#pos1 is start, pos2 is destination
+def getRecursiveCheapestPath(pos1,pos2):
+	
 
 def remakeConfig():
 	config = dict()

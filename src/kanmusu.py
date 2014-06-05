@@ -4,11 +4,11 @@ import random
 import os
 import sprites
 
-KAGA = {"hp":79,"armor":51,"los":72,"evasion":51,"firepower":11,"torpedo":0,"aa":62,"asw":6,"speed":3,
+KAGA = {"hp":79,"armor":51,"los":72,"evasion":51,"firepower":11,"torpedo":0,"aa":62,"asw":6,"speed":6,
 	    "range":2,"luck":12,"slots":4,"aircraft":(20,20,46,12),"remodel":30,"fuel":100,"ammo":130,"class":"cv"}
-TAIHOU = {"hp":67,"armor":40,"los":47,"evasion":33,"firepower":0,"torpedo":0,"aa":42,"asw":0,"speed":3,
+TAIHOU = {"hp":67,"armor":40,"los":47,"evasion":33,"firepower":0,"torpedo":0,"aa":42,"asw":0,"speed":6,
 	    "range":2,"luck":2,"slots":4,"aircraft":(18,18,18,7),"remodel":40,"fuel":100,"ammo":130,"class":"cv"}
-KONGOU = {"hp":75,"armor":89,"los":37,"evasion":52,"firepower":135,"torpedo":0,"aa":73,"asw":2,"speed":3,
+KONGOU = {"hp":75,"armor":89,"los":37,"evasion":52,"firepower":135,"torpedo":0,"aa":73,"asw":2,"speed":8,
 	    "range":3,"luck":12,"slots":4,"aircraft":(3,3,3,3),"remodel":25,"fuel":100,"ammo":130,"class":"fastbb"}
 
 

@@ -1,4 +1,5 @@
 terrain type
+	- Ocean tiles (Ocean, shallow, etc) can have a DIRECTION to emulate the ocean's natural flow direction. Based off of that, movement modifiers
 	Ocean
 	Shallow water
 	Reefs (coral)

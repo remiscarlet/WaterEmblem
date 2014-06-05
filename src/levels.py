@@ -2,6 +2,7 @@ import pygame
 import random
 import math
 import gui
+import terrain
 import popup
 import os
 import sprites
@@ -71,16 +72,15 @@ TESTUNITLIST = {"1":"kaga","2":"taihou","3":"kongou","A":"wo","B":"re","C":"ta"}
 
 class Level(object):
 	def __init__(self, this):
-		self.tileInit()
+		self.tiles = terrain.Tiles(self)
 		self.mapInit(this)
 		self.spriteInit()
 		self.varInit()
 
-	def tileInit(self):
-		self.oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","actual_ocean.png"))
-		pygame.draw.rect(self.oceanTile, (0,0,200), (0,0,32,32), 1)
-		self.shallowTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","actual_shallow.png"))
-		pygame.draw.rect(self.shallowTile, (0,0,200), (0,0,32,32), 1)
+	#	self.oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","actual_ocean.png"))
+	#	pygame.draw.rect(self.oceanTile, (0,0,200), (0,0,32,32), 1)
+	#	self.shallowTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","actual_shallow.png"))
+	#	pygame.draw.rect(self.shallowTile, (0,0,200), (0,0,32,32), 1)
 
 	############
 	#Eventually should modify code so it uses portraits from here and not from main.py. Bad organization.
@@ -134,9 +134,9 @@ class Level(object):
 				tileType = self.map[row][col]
 				pos = (32*col,32*row) #FLIPPING ROW AND COL HERE BECAUSE METHODS TAKE ARGS IN X AND Y, NOT Y AND X
 				if tileType == "o":
-					win.blit(self.oceanTile, pos)
+					win.blit(self.tiles.ocean.image, pos)
 				if tileType == "s":
-					win.blit(self.shallowTile,pos)
+					win.blit(self.tiles.shallow.image,pos)
 		return win
 
 	#################
