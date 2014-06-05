@@ -26,7 +26,8 @@ class shipClasses:
 
 
 
-
+# Will assign an arbitrary value to each class before generating a random int to select class.
+# Will then select a random ship from chosen class.
 def shipCraft(fuel, steel, ammo, baux):
 	craft = shipClasses()
 	#Fuel Calculations
