@@ -101,7 +101,8 @@ class Level(object):
 		self.size = (len(self.map),len(self.map[0])) #TUPLE OF MAP SIZE. Y THEN X. AGAIN, ROW THEN COL
 		self.width = self.size[1]*32
 		self.height = self.size[0]*32
-		self.mapSurf = self.drawMap() #Makes a map surface the size of the map with 32x32 being the size of one tile
+		self.mapRender = self.drawMap() #Makes a map surface the size of the map with 32x32 being the size of one tile
+		self.mapSurf = pygame.Surface((32*self.size[1],32*self.size[0]))
 		self.widthPad,self.heightPad = 0,0
 		#boardViewTopLeft is the topleft position of the board currently on-screen.
 		#This is for maps that are larger than the actual display screen (Read: Almost all maps)

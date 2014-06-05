@@ -261,17 +261,18 @@ class WaterEmblem(object):
 
 	def drawPlaying(self):
 		def drawBoardPanel():
-			boardTopLeft = self.currentLevel.boardViewTopLeft
-			width = self.currentLevel.width if self.currentLevel.width<640 else 640
-			height = self.currentLevel.height if self.currentLevel.height<352 else 352
-			topLeft = (boardTopLeft[0]*32,boardTopLeft[1]*32,width,height)
-			self.gameBoardWin.blit(self.currentLevel.mapSurf, (self.currentLevel.widthPad,self.currentLevel.heightPad), topLeft)
+			self.currentLevel.mapSurf.blit(self.currentLevel.mapRender,(0,0))
 			for kanmusu in self.currentLevel.kanmusuDict:
 				#print kanmusu
 				ship = self.currentLevel.kanmusuDict[kanmusu]
 				pos = ship.pos
 				topleft = (pos[0]*32,pos[1]*32)
-				self.gameBoardWin.blit(ship.sprite.image,topleft)
+				self.currentLevel.mapSurf.blit(ship.sprite.image,topleft)
+			boardTopLeft = self.currentLevel.boardViewTopLeft
+			width = self.currentLevel.width if self.currentLevel.width<640 else 640
+			height = self.currentLevel.height if self.currentLevel.height<352 else 352
+			topLeft = (boardTopLeft[0]*32,boardTopLeft[1]*32,width,height)
+			self.gameBoardWin.blit(self.currentLevel.mapSurf, (self.currentLevel.widthPad,self.currentLevel.heightPad), topLeft)
 			#ship = self.currentLevel.kanmusuDict["kaga"]
 			#pos = ship.pos
 			#topleft = (pos[0]*32,pos[1]*32)
