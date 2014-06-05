@@ -13,7 +13,7 @@ class GameInfoPanel2(object):
 
 
 	def minimapInit(self, currentLevel):
-		fullMap = currentLevel.mapSurf
+		fullMap = currentLevel.mapRender
 		width,height = currentLevel.width,currentLevel.height
 		#This gets the ratio of size between the minimap (128x128) and the actual map layout.
 		#We will use this ratio to scale everything in the minimap based off of the actual mapsurf we draw on the board

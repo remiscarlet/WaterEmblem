@@ -14,3 +14,4 @@
 	- Added stats display and whatnot
 	- Added displaying (horrible) sprites of kanmusu
 	- Kanmusu are now movable. (But buggy)(Can stack)
+	- Kanmusu don't stack by accident now wheee
