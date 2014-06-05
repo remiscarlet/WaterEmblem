@@ -11,17 +11,17 @@ class Kanmusu(object):
 	#kanmusu should be supplied in a lowercase name of kanmusu
 	def __init__(self, kanmusu):
 		#Once we have a file with all the numbers, I'll pull it from there. For now, hardcoded.
-		self.hp = 50
-		self.armor = 60
-		self.los = 70
-		self.evasion = 30
-		self.firepower = 0
+		self.hp = 79
+		self.armor = 51
+		self.los = 72
+		self.evasion = 51
+		self.firepower = 11
 		self.torpedo = 0
-		self.aa = 50
-		self.asw = 0
-		self.speed = 1
-		self.range = 2
-		self.luck = 20
+		self.aa = 62
+		self.asw = 6
+		self.speed = 3
+		self.range = 1
+		self.luck = 12
 		self.slots = 4
 		self.aircraft = (20,20,46,12)
 		self.remodel = 30
