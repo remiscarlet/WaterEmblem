@@ -2,7 +2,7 @@ import os
 import random
 
 class shipClasses:
-	def __init__:
+	def __init__():
 		self.regcraft = {self.DD:750, self.Rare_DD:0, self.CL:200, self.CA:50, self.Fast_BB:0, self.BBV:0, self.Rare_BB:0, self.CVL:0, self.CV:0, self.SS:0, self.AV:0}
 		self.DD = ("Fubuki", "Shirayuki", "Murakumo", "Sazanami", "Ushio", "Akatsuki", "Inazuma", "Ikazuchi", "Hibiki", "Shigure", "Yuudachi", "Samidare") #incomplete
 		self.Rare_DD = ("Shimakaze", "Yukikaze")
