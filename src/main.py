@@ -426,7 +426,7 @@ def getMovementCost(pos1,pos2):
 
 #pos1 is start, pos2 is destination
 def getRecursiveCheapestPath(pos1,pos2):
-	
+	pass
 
 def remakeConfig():
 	config = dict()

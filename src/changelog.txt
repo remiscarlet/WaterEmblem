@@ -21,3 +21,4 @@
 	- Kanmusu's movable distance limited by speed stat.
 	- When moving kanmusu, movable tiles are highlighted blue
 	- When moving kanmusu, unmovable tiles are highlighted red
+	- Changed how tiles are handled internally to allow versatility and modulabiilty
