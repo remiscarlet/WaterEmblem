@@ -117,13 +117,13 @@ class WaterEmblem(object):
 		self.gameInfoPanel2.update(self.currentLevel)
 		# panel 3
 		self.gameInfoPanel3 = gui.GameInfoPanel3()
-		self.gameInfoPanel3.update("o", self)
+		self.gameInfoPanel3.update("o",self)
 		# panel 4
 		self.gameInfoPanel4 = gui.GameInfoPanel4()
-		self.gameInfoPanel4.update("kaga", self)
+		self.gameInfoPanel4.update("kaga",self)
 		# panel 5
 		self.gameInfoPanel5 = gui.GameInfoPanel5()
-		self.gameInfoPanel5.update("kaga", self)
+		self.gameInfoPanel5.update("kaga",self)
 		############################################################################
 		########### Entire above code should be looked at after UI is finalized ####
 		############################################################################
@@ -289,21 +289,16 @@ class WaterEmblem(object):
 			#topleft = (pos[0]*32,pos[1]*32)
 			#self.gameBoardWin.blit(ship.sprite.image,topleft)
 		def drawInfoPanel():
-			def drawPanel1():
-				self.gameInfoWin.blit(self.gameInfoPanel1,self.gameInfoPanel1Rect)
-			def drawPanel2():
-				self.gameInfoWin.blit(self.gameInfoPanel2.fullSurf,self.gameInfoPanel2.rect)
-			def drawPanel3():
-				self.gameInfoWin.blit(self.gameInfoPanel3.fullSurf,self.gameInfoPanel3.rect)
-			def drawPanel4():
-				self.gameInfoWin.blit(self.gameInfoPanel4.fullSurf,self.gameInfoPanel4.rect)
-			def drawPanel5():
-				self.gameInfoWin.blit(self.gameInfoPanel5.fullSurf,self.gameInfoPanel5.rect)
-			drawPanel1()
-			drawPanel2()
-			drawPanel3()
-			drawPanel4()
-			drawPanel5()
+			#drawPanel1():
+			self.gameInfoWin.blit(self.gameInfoPanel1,self.gameInfoPanel1Rect)
+			#drawPanel2():
+			self.gameInfoWin.blit(self.gameInfoPanel2.fullSurf,self.gameInfoPanel2.rect)
+			#drawPanel3():
+			self.gameInfoWin.blit(self.gameInfoPanel3.fullSurf,self.gameInfoPanel3.rect)
+			#drawPanel4():
+			self.gameInfoWin.blit(self.gameInfoPanel4.fullSurf,self.gameInfoPanel4.rect)
+			#drawPanel5():
+			self.gameInfoWin.blit(self.gameInfoPanel5.fullSurf,self.gameInfoPanel5.rect)
 		def drawMovableTileOverlay():
 			def overlayTile(row,col,movable=True):
 				if movable: self.currentLevel.mapSurf.blit(self.movableTileOverlay,(row*32,col*32))
@@ -330,8 +325,6 @@ class WaterEmblem(object):
 				filledPos = list()
 				floodFillOverlay(startPos[0],startPos[1],startPos,dist,kanmusuPos)
 				#print filledPos
-
-
 
 
 		drawBoardPanel()
