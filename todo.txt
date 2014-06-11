@@ -1,3 +1,7 @@
 isreachable()
 
 turning radius for BBs?
+
+"Tick based movement"
+Torpedos take "ticks" to travel
+torpedo sighting based off of LoS
