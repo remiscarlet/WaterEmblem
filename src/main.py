@@ -83,14 +83,14 @@ class WaterEmblem(object):
 				self.oceanRect = self.ocean.get_rect()
 				self.shallow = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "actual_shallow.png"))
 				self.shallowRect = self.shallow.get_rect()
-		class kanmusuPortraitInit(object):
-			def __init__(self):
-				self.kaga = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "kaga.png"))
-				self.kagaRect = self.kaga.get_rect()
-				self.taihou = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "taihou.png"))
-				self.taihouRect = self.taihou.get_rect()
-				self.kongou = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "kongou.png"))
-				self.kongouRect = self.kongou.get_rect()
+		#class kanmusuPortraitInit(object):
+		#	def __init__(self):
+		#		self.kaga = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "kaga.png"))
+		#		self.kagaRect = self.kaga.get_rect()
+		#		self.taihou = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "taihou.png"))
+		#		self.taihouRect = self.taihou.get_rect()
+		#		self.kongou = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits", "kongou.png"))
+		#		self.kongouRect = self.kongou.get_rect()
 		# overlay tiles
 		self.movableTileOverlay = pygame.Surface((32,32), pygame.SRCALPHA, 32).convert_alpha()
 		self.unmovableTileOverlay = pygame.Surface((32,32), pygame.SRCALPHA, 32).convert_alpha()
@@ -102,7 +102,7 @@ class WaterEmblem(object):
 		blit_alpha(self.unmovableTileOverlay,red,(0,0),100)
 		####
 		self.tilePortraits = tilePortraitInit()
-		self.kanmusuPortraits = kanmusuPortraitInit()
+		#self.kanmusuPortraits = kanmusuPortraitInit()
 		# panel 1
 		self.gameInfoPanel1 = pygame.Surface((128,128))
 		self.gameInfoPanel1.fill((255,255,255))

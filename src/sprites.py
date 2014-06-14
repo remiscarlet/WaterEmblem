@@ -10,7 +10,10 @@ import random
 class UnitSprite(pygame.sprite.Sprite):
 	def __init__(self, kanmusu):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu sprites",kanmusu+".png"))
+		temp = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu",kanmusu,"13 - Portrait Small.png"))
+		tempImage = pygame.transform.smoothscale(temp, (21,32))
+		self.image = pygame.Surface((32,32), pygame.SRCALPHA).convert_alpha()
+		self.image.blit(tempImage, (5,0))
 
 class Cursor(pygame.sprite.Sprite):
 	def __init__(self, currentLevel):
