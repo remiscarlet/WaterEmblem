@@ -173,11 +173,29 @@ class WaterEmblem(object):
 			if event.type == pygame.QUIT: self.isRunning = False
 			#check that the event has attr of key to prevent crashes
 			if hasattr(event, 'key'):
+				print event
 				keys = pygame.key.get_pressed()
-				if (event.key == self.upKey or event.key == self.downKey or
-					event.key == self.leftKey or event.key == self.rightKey or
-					event.key == self.confirmKey or event.key == self.cancelKey):
-					if self.status["playing"]: self.playingUpdate(keys)
+				if self.status["playing"]:
+					if event.type == pygame.KEYDOWN:
+						if event.key == self.upKey:
+							self.playingUpdate("up")
+						if event.key == self.downKey:
+							self.playingUpdate("down")
+						if event.key == self.leftKey:
+							self.playingUpdate("left")
+						if event.key == self.rightKey:
+							self.playingUpdate("right")
+						elif event.key == self.confirmKey and not self.confirmHeld:
+							self.confirmHeld = True
+							self.playingUpdate("confirm")
+						elif event.key == self.cancelKey and not self.cancelHeld:
+							self.cancelHeld = True
+							self.playingUpdate("cancel")
+					elif event.type == pygame.KEYUP:
+						if event.key == self.confirmKey:
+							self.confirmHeld = False
+						elif event.key == self.cancelKey:
+							self.cancelHeld = False
 
 
 
@@ -211,12 +229,12 @@ class WaterEmblem(object):
 		self.gameInfoPanel2.update(self.currentLevel)
 		cursor = self.currentLevel.cursor
 		if keys != None:
-			up = keys[self.upKey]
-			down = keys[self.downKey]
-			left = keys[self.leftKey]
-			right = keys[self.rightKey]
-			confirm = keys[self.confirmKey]
-			cancel = keys[self.cancelKey]
+			up = (keys == "up")
+			down = (keys == "down")
+			left = (keys == "left")
+			right = (keys == "right")
+			confirm = (keys == "confirm")
+			cancel = (keys == "cancel")
 			if down or up or left or right:
 				if down: cursor.moveCursor((0,-1), self.currentLevel)
 				if up: cursor.moveCursor((0,+1), self.currentLevel)
@@ -393,7 +411,7 @@ def run():
 	#pygame.display.set_icon(pygame.image.load(os.path.join(os.path.curdir,"img","gui","icon.png")))
 	pygame.mouse.set_visible(1)
 	pygame.event.set_allowed(None)
-	pygame.event.set_allowed([pygame.QUIT,pygame.KEYDOWN])
+	pygame.event.set_allowed([pygame.QUIT,pygame.KEYDOWN,pygame.KEYUP])
 	screenSize = config["Screen Size"].split("x")
 	trueWidth = int(screenSize[0])
 	trueHeight = int(screenSize[1])

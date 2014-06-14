@@ -141,7 +141,7 @@ class GameInfoPanel5(object):
 		self.titleSurf.fill((255,255,255))
 		self.titleSurf.blit(tempText, (padding,0))
 		self.imageSurf.fill((0,0,0))
-		self.imageSurf.blit(eval("this.kanmusuPortraits."+kanmusu), (0,0))
+		self.imageSurf.blit(this.currentLevel.kanmusuDict[kanmusu].miniPortrait, (0,0))
 		self.drawPanel()
 
 	def drawPanel(self):

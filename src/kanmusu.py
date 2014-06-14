@@ -36,6 +36,10 @@ class Kanmusu(object):
 		self.ammo = eval(kanmusu+"[\"ammo\"]")
 		self.shipClass = eval(kanmusu+"[\"class\"]")
 		self.pos = pos
-		self.miniPortrait = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu portraits",kanmusu+".png"))
+		kanmusu = kanmusu.lower()
+		image = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu",kanmusu,"9 - Card Vector.png"))
+		tempImage = pygame.transform.smoothscale(image, (128,192))
+		self.miniPortrait = pygame.Surface((128,108))
+		self.miniPortrait.blit(tempImage,(0,0,128,108))
 		self.name = kanmusu.capitalize()
 		self.sprite = sprites.UnitSprite(kanmusu)
