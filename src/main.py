@@ -163,7 +163,6 @@ class WaterEmblem(object):
 			if event.type == pygame.QUIT: self.isRunning = False
 			#check that the event has attr of key to prevent crashes
 			if hasattr(event, 'key'):
-				print event
 				keys = pygame.key.get_pressed()
 				if self.status["playing"]:
 					if event.type == pygame.KEYDOWN:
