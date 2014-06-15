@@ -249,13 +249,16 @@ class WaterEmblem(object):
 				#if a kanmusu is already selected (eg, we're moving her)
 				elif self.currentLevel.selectedKanmusu != None:
 					kanmusu = self.currentLevel.selectedKanmusu
+					#positions is a list of positions we CANNOT move to
 					positions = list()
 					for ship in self.currentLevel.kanmusuDict:
 						positions.append(self.currentLevel.kanmusuDict[ship].pos)
+					for enemy in self.currentLevel.enemyDict:
+						positions.append(self.currentLevel.enemyDict[enemy].pos)
+
 					kanmusuStats = self.currentLevel.kanmusuDict[kanmusu]
 					if cursor.truePos not in positions or cursor.truePos == kanmusuStats.pos:
 						if getDisplacement(cursor.truePos,kanmusuStats.pos)<=kanmusuStats.speed:
-							print self.sfx.select.play()
 							self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
 					self.currentLevel.selectedKanmusu = None
 
@@ -290,6 +293,11 @@ class WaterEmblem(object):
 				pos = ship.pos
 				topleft = (pos[0]*32,pos[1]*32)
 				self.currentLevel.mapSurf.blit(ship.sprite.image,topleft)
+			for enemy in self.currentLevel.enemyDict:
+				ship = self.currentLevel.enemyDict[enemy]
+				pos = ship.pos
+				topleft = (pos[0]*32,pos[1]*32)
+				self.currentLevel.mapSurf.blit(ship.sprite.image,topleft)	
 			boardTopLeft = self.currentLevel.boardViewTopLeft
 			width = self.currentLevel.width if self.currentLevel.width<640 else 640
 			height = self.currentLevel.height if self.currentLevel.height<352 else 352
@@ -319,7 +327,7 @@ class WaterEmblem(object):
 				if (getDisplacement((row,col),startPos)<=maxDisplacement and
 					[row,col] not in filledPos):
 					filledPos.append([row,col])
-					if [row,col] not in kanmusuPos: overlayTile(row,col,True)
+					if [row,col] not in kanmusuPos and [row,col] not in enemyPos: overlayTile(row,col,True)
 					else: overlayTile(row,col,False)
 					floodFillOverlay(row+1,col,startPos,dist, kanmusuPos)
 					floodFillOverlay(row-1,col,startPos,dist, kanmusuPos)
@@ -330,8 +338,11 @@ class WaterEmblem(object):
 			if self.currentLevel.selectedKanmusu != None:
 				kanmusu = self.currentLevel.selectedKanmusu
 				kanmusuPos = list()
+				enemyPos = list()
 				for key in self.currentLevel.kanmusuDict:
 					if key != kanmusu: kanmusuPos.append(self.currentLevel.kanmusuDict[key].pos)
+				for key in self.currentLevel.enemyDict:
+					enemyPos.append(self.currentLevel.enemyDict[key].pos)
 				dist = self.currentLevel.kanmusuDict[kanmusu].speed
 				startPos = self.currentLevel.kanmusuDict[kanmusu].pos
 				filledPos = list()

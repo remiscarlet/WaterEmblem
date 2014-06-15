@@ -49,9 +49,9 @@ TESTMAPUNITPOS = [[' ',' ',' ',' ',' ',' ',' ',' ','A','B',],
 				  ['3',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
 				  ['1','2',' ',' ',' ',' ',' ',' ',' ',' ',]]
 
-TESTMAPUNITPOS2 = [['1','2',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','A','B',],
-				  ['3',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','C',],
-				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+TESTMAPUNITPOS2 = [['1','2',' ',' ',' ',' ',' ','A',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  ['3',' ',' ',' ',' ',' ',' ','B',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
+				  [' ',' ',' ',' ',' ',' ',' ','C',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
 				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
 				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
 				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',],
@@ -68,7 +68,7 @@ TESTMAPUNITPOS2 = [['1','2',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
 				  [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',]]
 
 
-TESTUNITLIST = {"1":"kaga","2":"taihou","3":"kongou","A":"wo","B":"re","C":"ta"}
+TESTUNITLIST = {"1":"kaga","2":"taihou","3":"kongou","A":"wo","B":"re","C":"ru"}
 
 class Level(object):
 	def __init__(self, this):
@@ -115,10 +115,11 @@ class Level(object):
 
 	def spriteInit(self):
 		self.kanmusuDict = dict()
+		self.enemyDict = dict()
 		for key in self.playerPos:
-			
 			self.kanmusuDict[key] = kanmusu.Kanmusu(key,self.playerPos[key])
-			
+		for key in self.enemyPos:
+			self.enemyDict[key] = kanmusu.Enemy(key,self.enemyPos[key])
 	def varInit(self):
 		self.selectedKanmusu = None
 
@@ -161,7 +162,7 @@ class Level(object):
 			for col in xrange(len(self.unitPos[row])):
 				val =  self.unitPos[row][col]
 				if whichPlayer == 0 and val.isdigit():
-					pos[TESTUNITLIST[val]] = [row,col] #ROW COL -> Y X. NOTE THE INVERTED ORDER
+					pos[TESTUNITLIST[val]] = [col,row] #COL ROW -> X Y. NOTE THE INVERTED ORDER
 				if whichPlayer == 1 and val.isalpha():
-					pos[TESTUNITLIST[val]] = [row,col] #ROW COL -> Y X. NOTE THE INVERTED ORDER
+					pos[TESTUNITLIST[val]] = [col,row] #COL ROW -> X Y. NOTE THE INVERTED ORDER
 		return pos

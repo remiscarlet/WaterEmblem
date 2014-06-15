@@ -15,6 +15,22 @@ class UnitSprite(pygame.sprite.Sprite):
 		self.image = pygame.Surface((32,32), pygame.SRCALPHA).convert_alpha()
 		self.image.blit(tempImage, (5,0))
 
+class EnemySprite(pygame.sprite.Sprite):
+	def __init__(self, ship, shipType):
+		pygame.sprite.Sprite.__init__(self)
+		temp = pygame.image.load(os.path.join(os.path.curdir,"img","enemy",ship,shipType+".png"))
+		size = temp.get_rect()
+		side = 32
+		larger = max(size[3],size[2])
+		ratio = float(larger)/side
+		newWidth = int(size[2]/ratio)
+		newHeight = int(size[3]/ratio)
+		tempImage = pygame.transform.smoothscale(temp, (newWidth,newHeight))
+		self.image = pygame.Surface((32,32), pygame.SRCALPHA).convert_alpha()
+		widthPad = (32-newWidth)/2
+		heightPad = (32-newHeight)/2
+		self.image.blit(tempImage, (widthPad,heightPad))
+
 class Cursor(pygame.sprite.Sprite):
 	def __init__(self, currentLevel):
 		pygame.sprite.Sprite.__init__(self)
