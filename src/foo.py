@@ -1,7 +1,7 @@
 import os
 import shutil
 
-soundPath = os.path.join(os.path.curdir,"img","kanmusu")
+soundPath = os.path.join(os.path.curdir,"sounds")
 folders = os.listdir(soundPath)
 mapping = {1:"Intro",2:"Secretary1",3:"Secretary2",4:"Secretary3",5:"Ship Constructed",6:"Expedition Complete",7:"Return from Sortie",8:"Show Rank",
 		   9:"Equipment Resupply1",10:"Equipment Resupply2",11:"Docking Light",12:"Docking Heavy",13:"Joining Fleet",14:"Start Sortie",
@@ -18,13 +18,10 @@ for kanmusu in folders:
 		#print soundFolder
 		files = os.listdir(soundFolder)
 		for soundFile in files:
-			fileName = soundFile.split(".")[0]
-			number = fileName.split(" ")[1]
-			if fileName[0].isdigit(): continue
-			newFileName = number+" - "+mapping2[fileName]+".png"
-			oldPath = os.path.join(soundFolder,soundFile)
-			newPath = os.path.join(soundFolder,newFileName)
-			os.rename(oldPath,newPath)
+			if soundFile.find("."):
+				fileName = soundFile.split(".")[1]
+				if fileName == "mp3":
+					os.remove(os.path.join(soundFolder,soundFile))
 		#if os.access(soundFolder,os.F_OK):
 		#	os.rmdir(soundFolder)
 

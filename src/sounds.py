@@ -12,4 +12,5 @@ class SFX(object):
 
 class BGM(object):
 	def __init__(self):
+		self.battleBoss = os.path.join('sounds','music','Battle Boss.ogg')
 		pass
