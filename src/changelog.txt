@@ -22,3 +22,9 @@
 	- When moving kanmusu, movable tiles are highlighted blue
 	- When moving kanmusu, unmovable tiles are highlighted red
 	- Changed how tiles are handled internally to allow versatility and modulabiilty
+
+6/14/2014 - Remi
+	- Mostly resource gathering. Added all sounds and images of all kanmusu. (500mb!)
+
+6/15/2014 - Remi
+	- Added music. Currently uses battle theme in game in-loop and some basic sound effects. Amazing how much of a different it makes.
