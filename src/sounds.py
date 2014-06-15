@@ -22,6 +22,8 @@ class SFX(object):
 		self.modernize = pygame.mixer.Sound(os.path.join('sounds','sfx','Modernize.ogg'))
 		self.sonarShort = pygame.mixer.Sound(os.path.join('sounds','sfx','Sonar (Short).ogg'))
 		self.sonarLong = pygame.mixer.Sound(os.path.join('sounds','sfx','Sonar (Long).ogg'))
+		self.cursorMove = pygame.mixer.Sound(os.path.join('sounds','sfx','Cursor Move.ogg'))
+
 	def setVolume(self, vol):
 		self.dismantle.set_volume(vol)
 		self.cancel.set_volume(vol)
@@ -39,6 +41,7 @@ class SFX(object):
 		self.modernize.set_volume(vol)
 		self.sonarShort.set_volume(vol)
 		self.sonarLong.set_volume(vol)
+		self.cursorMove.set_volume(vol)
 
 
 class BGM(object):

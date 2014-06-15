@@ -225,6 +225,7 @@ class WaterEmblem(object):
 			confirm = (keys == "confirm")
 			cancel = (keys == "cancel")
 			if down or up or left or right:
+				self.sfx.cursorMove.play()
 				if down: cursor.moveCursor((0,-1), self.currentLevel)
 				if up: cursor.moveCursor((0,+1), self.currentLevel)
 				if left: cursor.moveCursor((-1,0), self.currentLevel)
@@ -254,6 +255,7 @@ class WaterEmblem(object):
 					kanmusuStats = self.currentLevel.kanmusuDict[kanmusu]
 					if cursor.truePos not in positions or cursor.truePos == kanmusuStats.pos:
 						if getDisplacement(cursor.truePos,kanmusuStats.pos)<=kanmusuStats.speed:
+							print self.sfx.select.play()
 							self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
 					self.currentLevel.selectedKanmusu = None
 
@@ -277,10 +279,13 @@ class WaterEmblem(object):
 		pygame.mixer.music.play(-1)
 
 	def drawPlaying(self):
+		if not self.musicPlaying:
+			self.playMusic(self.bgm.battle)
+			self.musicPlaying = True
+
 		def drawBoardPanel():
 			self.currentLevel.mapSurf.blit(self.currentLevel.mapRender,(0,0))
 			for kanmusu in self.currentLevel.kanmusuDict:
-				#print kanmusu
 				ship = self.currentLevel.kanmusuDict[kanmusu]
 				pos = ship.pos
 				topleft = (pos[0]*32,pos[1]*32)
@@ -392,7 +397,7 @@ def run():
 	finally:
 		if fin != None: fin.close()
 		if fout != None: fout.close()
-	pygame.mixer.pre_init(44100, -16, 2, 2048)
+	pygame.mixer.pre_init(48000, -16, 2, 2048)
 	pygame.mixer.init()
 	pygame.mixer.set_num_channels(32)
 	pygame.init()
