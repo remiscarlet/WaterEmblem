@@ -259,6 +259,7 @@ class WaterEmblem(object):
 					kanmusuStats = self.currentLevel.kanmusuDict[kanmusu]
 					if cursor.truePos not in positions or cursor.truePos == kanmusuStats.pos:
 						if getDisplacement(cursor.truePos,kanmusuStats.pos)<=kanmusuStats.speed:
+							self.sfx.select.play()
 							self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
 					self.currentLevel.selectedKanmusu = None
 
