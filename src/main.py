@@ -301,10 +301,11 @@ class WaterEmblem(object):
 					else:
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
-				if cancel:
-					self.contextMenu.reset()
-					self.currentLevel.selectedKanmusu = None
-					self.contextMenu.selected = None
+			if cancel:
+				self.sfx.cancel.play()
+				self.contextMenu.reset()
+				self.currentLevel.selectedKanmusu = None
+				self.contextMenu.selected = None
 
 
 

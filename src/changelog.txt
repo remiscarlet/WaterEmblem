@@ -29,3 +29,6 @@
 6/15/2014 - Remi
 	- Added music. Currently uses battle theme in game in-loop and some basic sound effects. Amazing how much of a different it makes.
 	- Added enemy vessels. Wo, Re and Ru.
+
+6/16/2014 - Remi
+	- Added context menu. Battle function still not implemented.
