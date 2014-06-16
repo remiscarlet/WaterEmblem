@@ -25,6 +25,7 @@ class Kanmusu(object):
 		#Once we have a file with all the numbers, I'll pull it from there. For now, hardcoded.
 		kanmusu = kanmusu.upper()
 		self.hp = eval(kanmusu+"[\"hp\"]")
+		self.maxHP = eval(kanmusu+"[\"hp\"]")
 		self.armor = eval(kanmusu+"[\"armor\"]")
 		self.los = eval(kanmusu+"[\"los\"]")
 		self.evasion = eval(kanmusu+"[\"evasion\"]")

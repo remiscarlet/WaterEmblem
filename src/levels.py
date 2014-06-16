@@ -122,6 +122,7 @@ class Level(object):
 			self.enemyDict[key] = kanmusu.Enemy(key,self.enemyPos[key])
 	def varInit(self):
 		self.selectedKanmusu = None
+		self.cursor = sprites.Cursor(self)
 
 	###############
 	## drawMap will take the map symbols and draw it as an actual pygame surface

@@ -93,6 +93,7 @@ class WaterEmblem(object):
 		blit_alpha(self.unmovableTileOverlay,red,(0,0),100)
 		####
 		self.tilePortraits = tilePortraitInit()
+		self.contextMenu = gui.ContextMenu()
 		# panel 1
 		self.gameInfoPanel1 = pygame.Surface((128,128))
 		self.gameInfoPanel1.fill((255,255,255))
@@ -145,7 +146,7 @@ class WaterEmblem(object):
 
 	def spriteInit(self):
 		self.playerUIGroup = pygame.sprite.Group()
-		self.currentLevel.cursor = sprites.Cursor(self.currentLevel)
+		#self.currentLevel.cursor = sprites.Cursor(self.currentLevel)
 		self.playerUIGroup.add(self.currentLevel.cursor)
 
 	#############################
@@ -165,27 +166,35 @@ class WaterEmblem(object):
 			if hasattr(event, 'key'):
 				keys = pygame.key.get_pressed()
 				if self.status["playing"]:
-					if event.type == pygame.KEYDOWN:
-						if event.key == self.upKey:
-							self.playingUpdate("up")
-						if event.key == self.downKey:
-							self.playingUpdate("down")
-						if event.key == self.leftKey:
-							self.playingUpdate("left")
-						if event.key == self.rightKey:
-							self.playingUpdate("right")
-						elif event.key == self.confirmKey and not self.confirmHeld:
-							self.confirmHeld = True
-							self.playingUpdate("confirm")
-						elif event.key == self.cancelKey and not self.cancelHeld:
-							self.cancelHeld = True
-							self.playingUpdate("cancel")
+					if not self.contextMenu.isOn:
+						if event.type == pygame.KEYDOWN:
+							if event.key == self.upKey:
+								self.playingUpdate("up", keys)
+							if event.key == self.downKey:
+								self.playingUpdate("down", keys)
+							if event.key == self.leftKey:
+								self.playingUpdate("left", keys)
+							if event.key == self.rightKey:
+								self.playingUpdate("right", keys)
+					if self.contextMenu.isOn:
+						if event.type == pygame.KEYDOWN:
+							if event.key == self.downKey:
+								self.sfx.cursorMove.play()
+								self.contextMenu.update("down")
+							if event.key == self.upKey:
+								self.sfx.cursorMove.play()
+								self.contextMenu.update("up")
+					if event.key == self.confirmKey and not self.confirmHeld:
+						self.confirmHeld = True
+						self.playingUpdate("confirm")
+					elif event.key == self.cancelKey and not self.cancelHeld:
+						self.cancelHeld = True
+						self.playingUpdate("cancel")
 					elif event.type == pygame.KEYUP:
 						if event.key == self.confirmKey:
 							self.confirmHeld = False
 						elif event.key == self.cancelKey:
 							self.cancelHeld = False
-
 
 
 
@@ -212,18 +221,18 @@ class WaterEmblem(object):
 
 	def gameWinUpdate(self, key):
 		pass
-
-	def playingUpdate(self, keys=None):
+	#I should change the weird default val thing... That's really hacky...
+	def playingUpdate(self, key=None, keys=[0]*500):
 		self.playerUIGroup.update()
 		self.gameInfoPanel2.update(self.currentLevel)
 		cursor = self.currentLevel.cursor
-		if keys != None:
-			up = (keys == "up")
-			down = (keys == "down")
-			left = (keys == "left")
-			right = (keys == "right")
-			confirm = (keys == "confirm")
-			cancel = (keys == "cancel")
+		if key != None:
+			up = (key == "up") or keys[self.upKey]
+			down = (key == "down") or keys[self.downKey]
+			left = (key == "left") or keys[self.leftKey]
+			right = (key == "right") or keys[self.rightKey]
+			confirm = (key == "confirm")
+			cancel = (key == "cancel")
 			if down or up or left or right:
 				self.sfx.cursorMove.play()
 				if down: cursor.moveCursor((0,-1), self.currentLevel)
@@ -238,16 +247,24 @@ class WaterEmblem(object):
 						self.gameInfoPanel4.update(kanmusu, self)
 						self.gameInfoPanel5.update(kanmusu, self)
 			if confirm:
-				#if no kanmusu are currently selected
+				######################
+				# if no kanmusu are currently selected
+				######################
 				if self.currentLevel.selectedKanmusu == None:
+					self.sfx.select.play()
 					#go through each kanmusu and find one that...
 					for kanmusu in self.currentLevel.kanmusuDict:
 						#matches our current cursor position if any do at all
 						if self.currentLevel.kanmusuDict[kanmusu].pos == cursor.truePos:
 							#and make that our current "selected" kanmusu
 							self.currentLevel.selectedKanmusu = kanmusu
-				#if a kanmusu is already selected (eg, we're moving her)
+							self.contextMenu.isOn = True
+
+				######################
+				# if a kanmusu is already selected (eg, we're moving her)
+				######################
 				elif self.currentLevel.selectedKanmusu != None:
+					self.sfx.select.play()
 					kanmusu = self.currentLevel.selectedKanmusu
 					#positions is a list of positions we CANNOT move to
 					positions = list()
@@ -257,12 +274,37 @@ class WaterEmblem(object):
 						positions.append(self.currentLevel.enemyDict[enemy].pos)
 
 					kanmusuStats = self.currentLevel.kanmusuDict[kanmusu]
-					if cursor.truePos not in positions or cursor.truePos == kanmusuStats.pos:
-						if getDisplacement(cursor.truePos,kanmusuStats.pos)<=kanmusuStats.speed:
-							self.sfx.select.play()
-							self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
-					self.currentLevel.selectedKanmusu = None
 
+					if self.contextMenu.isOn:
+						print self.contextMenu.pos, self.contextMenu.selected
+						#If you select "move"
+						if self.contextMenu.pos == 0: 
+							self.contextMenu.selected = "move"
+						#If you select "attack" (Not implemented)
+						if self.contextMenu.pos == 1:
+							self.currentLevel.selectedKanmusu = None
+							self.contextMenu.selected = None
+						#If you select "cancel"
+						if self.contextMenu.pos == 2:
+							self.currentLevel.selectedKanmusu = None
+							self.contextMenu.selected = None
+						self.contextMenu.reset()
+					#if cursor.truePos not in positions or cursor.truePos == kanmusuStats.pos:
+					elif (self.contextMenu.selected == "move" and 
+						  getDisplacement(cursor.truePos,kanmusuStats.pos)<=kanmusuStats.speed and 
+						  self.currentLevel.cursor.truePos not in positions):
+						self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
+						self.contextMenu.isOn = False
+						# display context menu here for options (move, move and attack, attack, cancel)
+						self.currentLevel.selectedKanmusu = None
+						self.contextMenu.selected = None
+					else:
+						self.currentLevel.selectedKanmusu = None
+						self.contextMenu.selected = None
+				if cancel:
+					self.contextMenu.reset()
+					self.currentLevel.selectedKanmusu = None
+					self.contextMenu.selected = None
 
 
 
@@ -336,7 +378,7 @@ class WaterEmblem(object):
 					floodFillOverlay(row,col-1,startPos,dist, kanmusuPos)
 
 
-			if self.currentLevel.selectedKanmusu != None:
+			if self.currentLevel.selectedKanmusu != None and self.contextMenu.selected == "move":
 				kanmusu = self.currentLevel.selectedKanmusu
 				kanmusuPos = list()
 				enemyPos = list()
@@ -360,6 +402,11 @@ class WaterEmblem(object):
 			if isinstance(sprite, sprites.Cursor):
 				blit_alpha(self.win,sprite.white, sprite.rect, sprite.alpha)
 			self.win.blit(sprite.image,sprite.rect)
+		if self.contextMenu.isOn:
+			left = self.currentLevel.cursor.pos[0]*32+32
+			top = self.currentLevel.cursor.pos[1]*32
+			topleft = [left,top]
+			self.win.blit(self.contextMenu.image,topleft)
 
 	def drawEditor(self):
 		pass
@@ -459,7 +506,7 @@ def parseConfigVals(config):
 	if type(config) != list:
 		config = config.split("\n")
 	listOfVals = dict()
-	#add the vals to a dict with the keys 
+	#add the vals to a dict with the key 
 	for line in config:
 		index = line.find(":")
 		if index != -1:

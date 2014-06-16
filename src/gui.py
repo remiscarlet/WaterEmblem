@@ -149,6 +149,37 @@ class GameInfoPanel5(object):
 		self.fullSurf.blit(self.imageSurf, self.imageSurfRect)
 		self.fullSurf.blit(self.borderTemplate,(0,0))
 
+class ContextMenu(object):
+	def __init__(self):
+		self.bg = pygame.image.load(os.path.join(os.path.curdir,"img","UI","ContextMenuBG.png"))
+		self.menu = pygame.image.load(os.path.join(os.path.curdir,"img","UI","ContextMenuNormal.png"))
+		self.select = pygame.image.load(os.path.join(os.path.curdir,"img","UI","ContextMenuSelect.png"))
+		self.selectRect = [0,0,0,96]
+		self.image = pygame.Surface((100,96),pygame.SRCALPHA, 32).convert_alpha()
+		self.image.blit(self.bg,(0,0))
+		self.image.blit(self.select,self.selectRect)
+		self.image.blit(self.menu,(0,0))
+		self.tick = 0
+		self.selected = None
+		self.pos = 0
+		self.isOn = False
+	def update(self, move=None):
+		self.tick += 1
+		self.selectRect[2] = self.selectRect[2]+6 if self.selectRect[2]<=90 else 96
+		if move == "up":
+			self.pos = (self.pos-1) if self.pos >=1 else 2
+		if move == "down":
+			self.pos = (self.pos+1)%3
+		self.selectRect[1] = self.pos*32
+		self.image.fill(0)
+		self.image.blit(self.bg,(0,0))
+		self.image.blit(self.select,self.selectRect)
+		self.image.blit(self.menu,(0,0))
+	def reset(self):
+		self.pos = 0
+		self.isOn = False
+		self.update()
+
 
 def blit_alpha(target, source, location, opacity):
     x = location[0]
