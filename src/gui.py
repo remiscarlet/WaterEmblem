@@ -84,6 +84,8 @@ class GameInfoPanel3(object):
 
 class GameInfoPanel4(object):
 	def __init__(self):
+		def drawHealthBar():
+			pass
 		self.fullSurf = pygame.Surface((128,128))
 		self.fullSurf.fill((255,255,255))
 		self.rect = (384,0,128,128)
@@ -95,14 +97,15 @@ class GameInfoPanel4(object):
 		self.statRect = dict()
 		self.iconSurf = pygame.Surface((128,128))
 		self.iconSurf.fill((255,255,255))
-		iconList = ["hp","armor","evasion","asw","firepower","torpedo","aa","los"]
+		iconList = ["armor","asw","firepower","torpedo","aa","los"]
 		for i in xrange(len(iconList)):
 			icon = iconList[i]
 			self.icons[icon] = pygame.image.load(os.path.join(os.path.curdir,"img","UI","Icon_"+icon+".png"))
 			self.stats[icon] = 0
-			self.statRect[icon] = ((i/4)*64+32,(i%4)*32+8,16,16)
-			self.iconRect[icon] = ((i/4)*64+8,(i%4)*32+8,16,16)
+			self.statRect[icon] = ((i/3)*64+32,(i%3)*32+40,16,16)
+			self.iconRect[icon] = ((i/3)*64+8,(i%3)*32+40,16,16)
 			self.iconSurf.blit(self.icons[icon],self.iconRect[icon])
+
 
 
 	def update(self, kanmusu, this):

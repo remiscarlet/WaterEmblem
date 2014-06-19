@@ -2,8 +2,8 @@
 ###Config###
 
 Screen Size: 640x480
-BGM: 100
-SFX: 100
+BGM: 50
+SFX: 50
 Keybindings:
 	Up: K_UP
 	Down: K_DOWN

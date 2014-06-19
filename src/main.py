@@ -146,7 +146,6 @@ class WaterEmblem(object):
 
 	def spriteInit(self):
 		self.playerUIGroup = pygame.sprite.Group()
-		#self.currentLevel.cursor = sprites.Cursor(self.currentLevel)
 		self.playerUIGroup.add(self.currentLevel.cursor)
 
 	#############################
@@ -547,9 +546,6 @@ def blit_alpha(target, source, location, opacity):
     temp.blit(source, (0, 0))
     temp.set_alpha(opacity)        
     target.blit(temp, location)
-
-
-
 
 
 
