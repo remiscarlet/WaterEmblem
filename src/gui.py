@@ -84,10 +84,13 @@ class GameInfoPanel3(object):
 
 class GameInfoPanel4(object):
 	def __init__(self):
-		def drawHealthBar():
-			pass
 		self.fullSurf = pygame.Surface((128,128))
 		self.fullSurf.fill((255,255,255))
+		UIPath = os.path.join(os.path.curdir,"img","UI")
+		self.hpOverlay = pygame.image.load(os.path.join(UIPath,"HP Bar Overlay.png"))
+		self.hpRed = pygame.image.load(os.path.join(UIPath,"HP Bar Red.png"))
+		self.hpOrange = pygame.image.load(os.path.join(UIPath,"HP Bar Orange.png"))
+		self.hpGreen = pygame.image.load(os.path.join(UIPath,"HP Bar Green.png"))
 		self.rect = (384,0,128,128)
 		self.borderTemplate = pygame.Surface((128,128), pygame.SRCALPHA, 32).convert_alpha()
 		pygame.draw.rect(self.borderTemplate, (0,0,0), (0,0,128,128), 1)
@@ -114,9 +117,23 @@ class GameInfoPanel4(object):
 			val = str(eval("this.currentLevel.kanmusuDict[kanmusu]."+key))
 			tempText = this.statFont.render(val, True, (0,0,0))
 			self.fullSurf.blit(tempText, self.statRect[key])
+		hp,maxhp = this.currentLevel.kanmusuDict[kanmusu].currentHP,this.currentLevel.kanmusuDict[kanmusu].maxHP
+		self.drawHealthBar(hp, maxhp, this)
 		self.fullSurf.blit(self.borderTemplate, (0,0))
 
 
+	def drawHealthBar(self,hp,maxhp,this):
+		percentage = int(math.ceil((float(hp)/maxhp)*100))
+		rect = (0,0,percentage,18)
+		if percentage>=70:
+			self.fullSurf.blit(self.hpGreen,(14,24),rect)
+		if percentage>40 and percentage<70:
+			self.fullSurf.blit(self.hpOrange,(14,24),rect)
+		if percentage<40:
+			self.fullSurf.blit(self.hpRed,(14,24),rect)
+		self.fullSurf.blit(self.hpOverlay,(14,24))
+		hpText = this.statFont.render(str(hp)+"/"+str(maxhp),True,(0,0,0))
+		self.fullSurf.blit(hpText, (14,5,100,14))
 
 
 

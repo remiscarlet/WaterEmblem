@@ -24,7 +24,7 @@ class Kanmusu(object):
 	def __init__(self, kanmusu, pos):
 		#Once we have a file with all the numbers, I'll pull it from there. For now, hardcoded.
 		kanmusu = kanmusu.upper()
-		self.hp = eval(kanmusu+"[\"hp\"]")
+		self.currentHP = eval(kanmusu+"[\"hp\"]")
 		self.maxHP = eval(kanmusu+"[\"hp\"]")
 		self.armor = eval(kanmusu+"[\"armor\"]")
 		self.los = eval(kanmusu+"[\"los\"]")
@@ -56,7 +56,8 @@ class Enemy(object):
 	def __init__(self, ship, pos, shipType="normal"):
 		#Once we have a file with all the numbers, I'll pull it from there. For now, hardcoded.
 		ship = ship.upper()
-		self.hp = eval(ship+"[\"hp\"]")
+		self.currentHP = eval(ship+"[\"hp\"]")
+		self.maxHP = eval(ship+"[\"hp\"]")
 		self.armor = eval(ship+"[\"armor\"]")
 		self.los = eval(ship+"[\"los\"]")
 		self.evasion = eval(ship+"[\"evasion\"]")

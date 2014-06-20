@@ -11,6 +11,7 @@ import string
 import sounds
 import levels
 import popup
+import equations
 try: 
 	import thread
 except ImportError:
@@ -266,37 +267,50 @@ class WaterEmblem(object):
 					self.sfx.select.play()
 					kanmusu = self.currentLevel.selectedKanmusu
 					#positions is a list of positions we CANNOT move to
-					positions = list()
+					friendlyPositions = list()
+					enemyPositions = list()
 					for ship in self.currentLevel.kanmusuDict:
-						positions.append(self.currentLevel.kanmusuDict[ship].pos)
+						friendlyPositions.append(self.currentLevel.kanmusuDict[ship].pos)
 					for enemy in self.currentLevel.enemyDict:
-						positions.append(self.currentLevel.enemyDict[enemy].pos)
+						enemyPositions.append(self.currentLevel.enemyDict[enemy].pos)
+					positions = friendlyPositions+enemyPositions
 
 					kanmusuStats = self.currentLevel.kanmusuDict[kanmusu]
 
 					if self.contextMenu.isOn:
-						print self.contextMenu.pos, self.contextMenu.selected
 						#If you select "move"
 						if self.contextMenu.pos == 0: 
 							self.contextMenu.selected = "move"
-						#If you select "attack" (Not implemented)
+						#If you select "attack"
 						if self.contextMenu.pos == 1:
-							self.currentLevel.selectedKanmusu = None
-							self.contextMenu.selected = None
+							self.contextMenu.selected = "attack"
 						#If you select "cancel"
 						if self.contextMenu.pos == 2:
 							self.currentLevel.selectedKanmusu = None
 							self.contextMenu.selected = None
 						self.contextMenu.reset()
-					#if cursor.truePos not in positions or cursor.truePos == kanmusuStats.pos:
+					# We're selected to move and the selected "move" tile is a valid position.
 					elif (self.contextMenu.selected == "move" and 
 						  getDisplacement(cursor.truePos,kanmusuStats.pos)<=kanmusuStats.speed and 
 						  self.currentLevel.cursor.truePos not in positions):
 						self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
-						self.contextMenu.isOn = False
 						# display context menu here for options (move, move and attack, attack, cancel)
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
+					# We've selected to attack and the selected tile contains an enemy unit
+					elif (self.contextMenu.selected == "attack" and
+						  cursor.truePos in enemyPositions):
+						enemyVessel = None
+						for enemy in self.currentLevel.enemyDict:
+							enemy = self.currentLevel.enemyDict[enemy]
+							if enemy.pos == cursor.truePos:
+								enemyVessel = enemy
+						newDefenderHP = equations.battle(kanmusuStats,enemyVessel,None,None,None,None)
+						print newDefenderHP
+						enemyVessel.currentHP = newDefenderHP
+						self.currentLevel.selectedKanmusu = None
+						self.contextMenu.selected = None
+						pass
 					else:
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
