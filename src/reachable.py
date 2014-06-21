@@ -1,3 +1,5 @@
+# terrain = an array of movement costs for each tile, cur_x/y = starting (x,y) and spd = amount of tiles the ship can move
+
 def reachable(terrain, cur_x, cur_y, spd):
     ugokeru = []
     spdLeft = []
@@ -19,6 +21,7 @@ def reachable(terrain, cur_x, cur_y, spd):
 
     # Insert current speed into spdLeft and compare each time: If movement remaining is higher than what is listed there, check that tile.
 
+# Just a helper function for reachable(); recursively calls itself to modify ugokeru
 
 def isReachable(terrain, ugokeru, x, y, spd, spdLeft, rows, cols):
 
@@ -60,7 +63,7 @@ terrain = [[1, 1, 1, 1, 1, 1, 1, 1],
        [1.5, 1.5, 1.5, 1.5, 1.5, 2, 1.5, 1],
        [1, 1, 1, 1, 1, 1, 1, 1]] 
 
-reachable(terrain, 1, 1, 10)
+reachable(terrain, 1, 1, 50)
 print 
 
 terrain2 = [[1, 1, 1, 1, 1, 1, 1, 1, 1],
