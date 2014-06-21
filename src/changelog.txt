@@ -32,3 +32,8 @@
 
 6/16/2014 - Remi
 	- Added context menu. Battle function still not implemented.
+6/21/2014 - Remi
+	- Teehee forgot to update the changelog for the past couple of days.
+	- Added battle animation (Unfinished, but mostly there)
+	- Added character voice loading from sounds.py. Will only load voices of kanmusu you have in your fleet.
+	- Changed how set_vol works so it just cycles through the __dict__... Not sure why I didn't think of that before.
