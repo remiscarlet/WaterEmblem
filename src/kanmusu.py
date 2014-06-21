@@ -2,6 +2,7 @@ import pygame
 import math
 import random
 import os
+import sounds
 import sprites
 
 KAGA = {"hp":79,"armor":51,"los":72,"evasion":51,"firepower":11,"torpedo":0,"aa":62,"asw":6,"speed":6,
@@ -10,6 +11,8 @@ TAIHOU = {"hp":67,"armor":40,"los":47,"evasion":33,"firepower":0,"torpedo":0,"aa
 	    "range":2,"luck":2,"slots":4,"aircraft":(18,18,18,7),"remodel":40,"fuel":100,"ammo":130,"class":"cv"}
 KONGOU = {"hp":75,"armor":89,"los":37,"evasion":52,"firepower":135,"torpedo":0,"aa":73,"asw":2,"speed":8,
 	    "range":3,"luck":12,"slots":4,"aircraft":(3,3,3,3),"remodel":25,"fuel":100,"ammo":130,"class":"fastbb"}
+INAZUMA = {"hp":30,"armor":49,"los":16,"evasion":49,"firepower":41,"torpedo":57,"aa":40,"asw":34,"speed":12,
+	    "range":2,"luck":12,"slots":3,"aircraft":(0,0,0),"remodel":25,"fuel":100,"ammo":130,"class":"dd"}
 
 WO = {"hp":85,"armor":40,"los":40,"evasion":4,"firepower":0,"torpedo":0,"aa":30,"asw":0,"speed":6,
 	    "range":3,"luck":1,"slots":3,"aircraft":(27,27,27),"class":"cv"}
@@ -50,6 +53,7 @@ class Kanmusu(object):
 		self.miniPortrait.blit(tempImage,(0,0,128,108))
 		self.name = kanmusu.capitalize()
 		self.sprite = sprites.UnitSprite(kanmusu)
+		self.voices = sounds.Voices(kanmusu.lower())
 
 class Enemy(object):
 	#shipType is the variant of the ship. Eg, kai, flagship, flagship-kai, elite, etc.

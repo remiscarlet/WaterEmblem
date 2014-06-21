@@ -11,6 +11,7 @@ import string
 import sounds
 import levels
 import popup
+import animations
 import equations
 import battle
 try: 
@@ -53,6 +54,7 @@ class WaterEmblem(object):
 		self.status = {"menu":False, "options":False, "paused":False, "instructions":False,
 					   "editor":False, "playing":True, "gameOver":False, "gameWin":False}
 		self.musicPlaying = False
+		self.isAnimationActive = False
 
 	def fontInit(self):
 		self.dialogueFont = pygame.font.Font(os.path.join(os.path.curdir,'fonts','LTYPE.TTF'), 16)
@@ -96,6 +98,7 @@ class WaterEmblem(object):
 		####
 		self.tilePortraits = tilePortraitInit()
 		self.contextMenu = gui.ContextMenu()
+		self.activeAnimation = None
 		# panel 1
 		self.gameInfoPanel1 = pygame.Surface((128,128))
 		self.gameInfoPanel1.fill((255,255,255))
@@ -227,7 +230,11 @@ class WaterEmblem(object):
 		self.playerUIGroup.update()
 		self.gameInfoPanel2.update(self.currentLevel)
 		cursor = self.currentLevel.cursor
-		if key != None:
+		if self.isAnimationActive: 
+			#Will return True if animation is "done". Otherwise will just update normally
+			if self.activeAnimation.update() == True:
+				self.isAnimationActive = False
+		elif key != None:
 			up = (key == "up") or keys[self.upKey]
 			down = (key == "down") or keys[self.downKey]
 			left = (key == "left") or keys[self.leftKey]
@@ -307,6 +314,9 @@ class WaterEmblem(object):
 								enemyVessel = enemy
 						kanmusuVessel = self.currentLevel.kanmusuDict[kanmusu]
 						battle.cannonAttack(self, kanmusuVessel, enemyVessel)
+						if random.randint(1,5) == 1: kanmusuVessel.voices.attack.play()
+						self.activeAnimation = animations.ShipToShipBattle(kanmusu)
+						self.isAnimationActive = True
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
 					else:
@@ -402,14 +412,11 @@ class WaterEmblem(object):
 				startPos = self.currentLevel.kanmusuDict[kanmusu].pos
 				filledPos = list()
 				floodFillOverlay(startPos[0],startPos[1],startPos,dist,kanmusuPos)
-				#print filledPos
 
 
 		drawBoardPanel()
-		drawInfoPanel()
-
 		self.win.blit(self.gameBoardWin, self.gameBoardWinRect)
-		self.win.blit(self.gameInfoWin, self.gameInfoWinRect)
+
 		for sprite in self.playerUIGroup:
 			if isinstance(sprite, sprites.Cursor):
 				blit_alpha(self.win,sprite.white, sprite.rect, sprite.alpha)
@@ -420,6 +427,18 @@ class WaterEmblem(object):
 			topleft = [left,top]
 			self.win.blit(self.contextMenu.image,topleft)
 
+		#Blitting individual things because alphas are fucking broken with pygame...
+		if self.isAnimationActive:
+			#self.win.blit(self.activeAnimation.image,(0,0))
+			#blit_alpha(self.win, self.activeAnimation.image, (0,0), 255)
+			rect = self.activeAnimation.blackOverlayThingRect
+			ani = self.activeAnimation
+			blit_alpha(self.win, ani.blackOverlayThing,rect, ani.blackOverlayThingAlpha, rect)
+			blit_alpha(self.win, ani.attacker, ani.attackerRect, ani.attackerAlpha)
+
+		#Drawing info UI last to "cover up" anything that might spill down from above.
+		drawInfoPanel()
+		self.win.blit(self.gameInfoWin, self.gameInfoWinRect)
 	def drawEditor(self):
 		pass
 
@@ -550,14 +569,15 @@ def modifyConfigVals(key, val):
 
 # http://www.nerdparadise.com/tech/python/pygame/blitopacity/
 # Alpha blitting for per-pixel alpha surfaces	
-def blit_alpha(target, source, location, opacity):
-    x = location[0]
-    y = location[1]
-    temp = pygame.Surface((source.get_width(), source.get_height())).convert()
-    temp.blit(target, (-x, -y))
-    temp.blit(source, (0, 0))
-    temp.set_alpha(opacity)        
-    target.blit(temp, location)
+def blit_alpha(target, source, location, opacity, area=None):
+	x = location[0]
+	y = location[1]
+	temp = pygame.Surface((source.get_width(), source.get_height())).convert()
+	temp.blit(target, (-x, -y))
+	temp.blit(source, (0, 0))
+	temp.set_alpha(opacity)
+	if area == None: target.blit(temp, location)
+	else: target.blit(temp, location, area)
 
 
 

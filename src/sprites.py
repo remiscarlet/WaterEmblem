@@ -10,10 +10,13 @@ import random
 class UnitSprite(pygame.sprite.Sprite):
 	def __init__(self, kanmusu):
 		pygame.sprite.Sprite.__init__(self)
-		temp = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu",kanmusu,"13 - Portrait Small.png"))
-		tempImage = pygame.transform.smoothscale(temp, (21,32))
-		self.image = pygame.Surface((32,32), pygame.SRCALPHA).convert_alpha()
-		self.image.blit(tempImage, (5,0))
+		if os.access(os.path.join(os.path.curdir,"img","kanmusu",kanmusu,"Sprite.png"), os.F_OK):
+			self.image = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu",kanmusu,"Sprite.png"))
+		else:
+			temp = pygame.image.load(os.path.join(os.path.curdir,"img","kanmusu",kanmusu,"13 - Portrait Small.png"))
+			tempImage = pygame.transform.smoothscale(temp, (21,32))
+			self.image = pygame.Surface((32,32), pygame.SRCALPHA).convert_alpha()
+			self.image.blit(tempImage, (5,0))
 
 class EnemySprite(pygame.sprite.Sprite):
 	def __init__(self, ship, shipType):

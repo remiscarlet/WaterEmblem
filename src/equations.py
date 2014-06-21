@@ -19,8 +19,10 @@ def battle(attacker, defender, attackerTerrain, defenderTerrain, attackerFormati
 	#
 	# Are we also not doing remaining ammo? Cuz that's a relatively important modifier... We'll prob want to make our own modifiers.
 	#
+	attackPower = (attacker.firepower*formationModifiers["Firepower"])
+	defendingPower = (defender.armor)*(random.randint(66,133)/100.0)
+	
+	damage = (attackPower-defendingPower)#*attacker.remainingAmmo
+	defenderRemainingHP = defender.currentHP-damage if damage>0 else defender.currentHP
 
-	damage = ((attacker.firepower*formationModifiers["Firepower"])-((defender.armor+defenderTerrain.defBonus*5)*(random.randint(66,133)/100.0)))#*attacker.remainingAmmo
-
-	defenderRemainingHP = defender.currentHP-damage
 	return defenderRemainingHP
