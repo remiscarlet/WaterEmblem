@@ -1,4 +1,8 @@
-# terrain = an array of movement costs for each tile, cur_x/y = starting (x,y) and spd = amount of tiles the ship can move
+# terrain = an array of movement costs for each tile
+# cur_x/y = starting (x,y) 
+# spd = amount of tiles the ship can move
+# returns an array of 0s and 1s which correspond to the original array
+# 1 is reachable, 0 is not
 
 def reachable(terrain, cur_x, cur_y, spd):
     ugokeru = []
