@@ -25,7 +25,7 @@ class SFX(object):
 		self.cursorMove = pygame.mixer.Sound(os.path.join('sounds','sfx','Cursor Move.ogg'))
 
 	def setVolume(self, vol):
-		'''self.dismantle.set_volume(vol)
+		self.dismantle.set_volume(vol)
 		self.cancel.set_volume(vol)
 		self.select.set_volume(vol)
 		self.battleStart.set_volume(vol)
@@ -41,9 +41,7 @@ class SFX(object):
 		self.modernize.set_volume(vol)
 		self.sonarShort.set_volume(vol)
 		self.sonarLong.set_volume(vol)
-		self.cursorMove.set_volume(vol)'''
-		for key in self.__dict__:
-			eval("self."+key+".set_volume(vol)")
+		self.cursorMove.set_volume(vol)
 
 
 class BGM(object):
@@ -58,40 +56,3 @@ class BGM(object):
 		self.quests = os.path.join('sounds','bgm','Quests.ogg')
 		self.Sortie = os.path.join('sounds','bgm','Sortie.ogg')
 
-
-#Because loading every voice for every ship in the game is a bad idea.
-#Load only the ships being used. Eg, in fleet, in the battle map, etc.
-#Don't load ship voices that we KNOW aren't going to be used.
-#kanmusu should be supplied as a string.
-class Voices(object):
-	def __init__(self, kanmusu):
-		print kanmusu
-		self.intro = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu,'1 - Intro.ogg'))
-		self.secretary1 = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '2 - Secretary1.ogg'))
-		self.secretary2 = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '3 - Secretary2.ogg'))
-		self.secretary3 = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '4 - Secretary3.ogg'))
-		self.shipConstructed = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '5 - Ship Constructed.ogg'))
-		self.expeditionComplete = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '6 - Expedition Complete.ogg'))
-		self.returnFromSortie = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '7 - Return from Sortie.ogg'))
-		self.showRank = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '8 - ShowRank.ogg'))
-		self.equipment1 = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '9 - Equipment Resupply1.ogg'))
-		self.equipment2 = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '10 - Equipment Resupply2.ogg'))
-		self.dockingLight = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '11 - Docking Light.ogg'))
-		self.dockingHeavy = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '12 - Docking Heavy.ogg'))
-		self.joiningFleet = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '13 - Joining Fleet.ogg'))
-		self.startSortie = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '14 - Start Sortie.ogg'))
-		self.battleStart = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '15 - Battle Start.ogg'))
-		self.attack = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '16 - Attack.ogg'))
-		self.nightAttack = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '17 - Night Attack.ogg'))
-		self.nightBattle = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '18 - Night Battle.ogg'))
-		self.underFire1 = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '19 - Under Fire1.ogg'))
-		self.underFire2 = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '20 - Under Fire2.ogg'))
-		self.heavyDamage = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '21 - Heavy Damage.ogg'))
-		self.sink = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '22 - Sink.ogg'))
-		self.mvp = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '23 - MVP.ogg'))
-		self.libraryInfo = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '25 - Library Info.ogg'))
-		self.equipment3 = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '26 - Equipment3.ogg'))
-		self.resupply = pygame.mixer.Sound(os.path.join('sounds','kanmusu',kanmusu, '27 - Resupply.ogg'))
-	def setVolume(vol):
-		for key in self.__dict__:
-			eval("self."+key+".set_volume(vol)")
