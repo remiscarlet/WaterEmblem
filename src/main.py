@@ -12,13 +12,14 @@ import sounds
 import levels
 import popup
 import equations
+import battle
 try: 
 	import thread
 except ImportError:
 	import dummy_thread as thread
 
 #############################
-###### Primary Class ######
+###### Primary Class ########
 #############################
 class WaterEmblem(object):
 	############################
@@ -300,17 +301,14 @@ class WaterEmblem(object):
 					# We've selected to attack and the selected tile contains an enemy unit
 					elif (self.contextMenu.selected == "attack" and
 						  cursor.truePos in enemyPositions):
-						enemyVessel = None
 						for enemy in self.currentLevel.enemyDict:
 							enemy = self.currentLevel.enemyDict[enemy]
 							if enemy.pos == cursor.truePos:
 								enemyVessel = enemy
-						newDefenderHP = equations.battle(kanmusuStats,enemyVessel,None,None,None,None)
-						print newDefenderHP
-						enemyVessel.currentHP = newDefenderHP
+						kanmusuVessel = self.currentLevel.kanmusuDict[kanmusu]
+						battle.cannonAttack(self, kanmusuVessel, enemyVessel)
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
-						pass
 					else:
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None

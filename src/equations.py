@@ -13,13 +13,14 @@ def battle(attacker, defender, attackerTerrain, defenderTerrain, attackerFormati
 	#
 	# But for now keeping a temp formation modifier as copying the damage calculations from wiki.
 	#
+
 	formationModifiers = {"Firepower":1,"ASW":1,"AA":1,"Shelling Acc":"Medium","Torp Acc":"Medium","FPR":"Medium"}
 
 	#
 	# Are we also not doing remaining ammo? Cuz that's a relatively important modifier... We'll prob want to make our own modifiers.
 	#
 
-	damage = ((attacker.firepower*formationModifiers["Firepower"])-(defender.armor*(random.randint(66,133)/100.0)))#*attacker.remainingAmmo
+	damage = ((attacker.firepower*formationModifiers["Firepower"])-((defender.armor+defenderTerrain.defBonus*5)*(random.randint(66,133)/100.0)))#*attacker.remainingAmmo
 
 	defenderRemainingHP = defender.currentHP-damage
 	return defenderRemainingHP

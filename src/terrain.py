@@ -6,8 +6,8 @@ import sprites
 
 #eval(terrainType+"[\"\"]")
 
-OCEAN = {"movementCost":2,"defBonus":1,"visionCost":1}
-SHALLOW = {"movementCost":2,"defBonus":1,"visionCost":1}
+OCEAN = {"movementCost":2,"defBonus":0,"visionCost":1}
+SHALLOW = {"movementCost":2,"defBonus":0,"visionCost":1}
 
 class Tiles(object):
 	def __init__(self, this):
