@@ -112,6 +112,16 @@ class Level(object):
 		#self = this class. this = parent class. Horrible code. Will fix later.
 		if self.width<this.gameBoardWinRect[2]: self.widthPad = (this.gameBoardWinRect[2]-self.width)/2
 		if self.height<this.gameBoardWinRect[3]: self.heightPad = (this.gameBoardWinRect[3]-self.height)/2
+		self.terrainCostMap = list()
+		for row in xrange(len(self.map)):
+			self.terrainCostMap.append([])
+			for col in xrange(len(self.map[row])):
+				terrainType = self.map[row][col]
+				if terrainType == "o": terrainType = "ocean"
+				if terrainType == "s": terrainType = "shallow" 
+				terrainCost = eval("self.tiles."+terrainType+".movementCost")
+				self.terrainCostMap[row].append(terrainCost)
+
 
 	def spriteInit(self):
 		self.kanmusuDict = dict()

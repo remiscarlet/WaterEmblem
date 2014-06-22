@@ -12,6 +12,7 @@ import sounds
 import levels
 import popup
 import animations
+import reachable
 import equations
 import battle
 try: 
@@ -54,6 +55,7 @@ class WaterEmblem(object):
 		self.status = {"menu":False, "options":False, "paused":False, "instructions":False,
 					   "editor":False, "playing":True, "gameOver":False, "gameWin":False}
 		self.musicPlaying = False
+		self.movableTiles = list()
 		self.isAnimationActive = False
 
 	def fontInit(self):
@@ -93,8 +95,8 @@ class WaterEmblem(object):
 		blue.fill((0,0,150))
 		red = pygame.Surface((32,32))
 		red.fill((150,0,0))
-		blit_alpha(self.movableTileOverlay,blue,(0,0),100)
-		blit_alpha(self.unmovableTileOverlay,red,(0,0),100)
+		blit_alpha(self.movableTileOverlay,blue,(0,0),150)
+		blit_alpha(self.unmovableTileOverlay,red,(0,0),150)
 		####
 		self.tilePortraits = tilePortraitInit()
 		self.contextMenu = gui.ContextMenu()
@@ -288,6 +290,9 @@ class WaterEmblem(object):
 					if self.contextMenu.isOn:
 						#If you select "move"
 						if self.contextMenu.pos == 0: 
+							y,x = cursor.truePos
+							speed = self.currentLevel.kanmusuDict[kanmusu].speed
+							temp, self.movableTiles = reachable.reachable(self.currentLevel.terrainCostMap, y, x, speed)
 							self.contextMenu.selected = "move"
 						#If you select "attack"
 						if self.contextMenu.pos == 1:
@@ -299,7 +304,7 @@ class WaterEmblem(object):
 						self.contextMenu.reset()
 					# We're selected to move and the selected "move" tile is a valid position.
 					elif (self.contextMenu.selected == "move" and 
-						  getDisplacement(cursor.truePos,kanmusuStats.pos)<=kanmusuStats.speed and 
+						  tuple(cursor.truePos) in self.movableTiles and 
 						  self.currentLevel.cursor.truePos not in positions):
 						self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
 						# display context menu here for options (move, move and attack, attack, cancel)
@@ -388,16 +393,16 @@ class WaterEmblem(object):
 			def overlayTile(row,col,movable=True):
 				if movable: self.currentLevel.mapSurf.blit(self.movableTileOverlay,(row*32,col*32))
 				if not movable: self.currentLevel.mapSurf.blit(self.unmovableTileOverlay,(row*32,col*32))
-			def floodFillOverlay(row,col,startPos,maxDisplacement,kanmusuPos):
-				if (getDisplacement((row,col),startPos)<=maxDisplacement and
-					[row,col] not in filledPos):
-					filledPos.append([row,col])
-					if [row,col] not in kanmusuPos and [row,col] not in enemyPos: overlayTile(row,col,True)
-					else: overlayTile(row,col,False)
-					floodFillOverlay(row+1,col,startPos,dist, kanmusuPos)
-					floodFillOverlay(row-1,col,startPos,dist, kanmusuPos)
-					floodFillOverlay(row,col+1,startPos,dist, kanmusuPos)
-					floodFillOverlay(row,col-1,startPos,dist, kanmusuPos)
+			#def floodFillOverlay(row,col,startPos,maxDisplacement,kanmusuPos):
+			#	if (getDisplacement((row,col),startPos)<=maxDisplacement and
+			#		[row,col] not in filledPos):
+			#		filledPos.append([row,col])
+			#		if [row,col] not in kanmusuPos and [row,col] not in enemyPos: overlayTile(row,col,True)
+			#		else: overlayTile(row,col,False)
+			#		floodFillOverlay(row+1,col,startPos,dist, kanmusuPos)
+			#		floodFillOverlay(row-1,col,startPos,dist, kanmusuPos)
+			#		floodFillOverlay(row,col+1,startPos,dist, kanmusuPos)
+			#		floodFillOverlay(row,col-1,startPos,dist, kanmusuPos)
 
 
 			if self.currentLevel.selectedKanmusu != None and self.contextMenu.selected == "move":
@@ -408,10 +413,11 @@ class WaterEmblem(object):
 					if key != kanmusu: kanmusuPos.append(self.currentLevel.kanmusuDict[key].pos)
 				for key in self.currentLevel.enemyDict:
 					enemyPos.append(self.currentLevel.enemyDict[key].pos)
-				dist = self.currentLevel.kanmusuDict[kanmusu].speed
-				startPos = self.currentLevel.kanmusuDict[kanmusu].pos
-				filledPos = list()
-				floodFillOverlay(startPos[0],startPos[1],startPos,dist,kanmusuPos)
+				for tile in self.movableTiles:
+					if list(tile) not in kanmusuPos and list(tile) not in enemyPos:
+						overlayTile(tile[0],tile[1],True)
+					else:
+						overlayTile(tile[0],tile[1],False)
 
 
 		drawBoardPanel()
@@ -422,8 +428,19 @@ class WaterEmblem(object):
 				blit_alpha(self.win,sprite.white, sprite.rect, sprite.alpha)
 			self.win.blit(sprite.image,sprite.rect)
 		if self.contextMenu.isOn:
-			left = self.currentLevel.cursor.pos[0]*32+32
-			top = self.currentLevel.cursor.pos[1]*32
+			cursorPos = self.currentLevel.cursor.pos
+			print cursorPos, self.currentLevel.size
+			windowSize = (20,11)
+			if cursorPos[0] >= windowSize[0]-3:
+				print "a"
+				left = self.currentLevel.cursor.pos[0]*32-100
+			else: 
+				left = self.currentLevel.cursor.pos[0]*32+32
+			if cursorPos[1] >= windowSize[1]-3:
+				print "b"
+				top = self.currentLevel.cursor.pos[1]*32-64
+			else:
+				top = self.currentLevel.cursor.pos[1]*32
 			topleft = [left,top]
 			self.win.blit(self.contextMenu.image,topleft)
 
