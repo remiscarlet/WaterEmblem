@@ -1,11 +1,13 @@
 def reachable(terrain, cur_x, cur_y, spd):
     ugokeru = []
     spdLeft = []
+    movable = []
     rows = len(terrain)
     cols = len(terrain[0])
     for row in xrange(rows):
         ugokeru.append([])
         spdLeft.append([])
+        movable.append([])
         for col in xrange(cols):
             ugokeru[row].append(0)
             spdLeft[row].append(-1)
@@ -60,7 +62,7 @@ terrain = [[1, 1, 1, 1, 1, 1, 1, 1],
        [1.5, 1.5, 1.5, 1.5, 1.5, 2, 1.5, 1],
        [1, 1, 1, 1, 1, 1, 1, 1]] 
 
-reachable(terrain, 1, 1, 10)
+reachable(terrain, 1, 1, 5)
 print 
 
 terrain2 = [[1, 1, 1, 1, 1, 1, 1, 1, 1],

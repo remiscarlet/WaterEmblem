@@ -314,7 +314,7 @@ class WaterEmblem(object):
 								enemyVessel = enemy
 						kanmusuVessel = self.currentLevel.kanmusuDict[kanmusu]
 						battle.cannonAttack(self, kanmusuVessel, enemyVessel)
-						if random.randint(1,5) == 1: kanmusuVessel.voices.attack.play()
+						if random.randint(1,3) == 1: kanmusuVessel.voices.attack.play()
 						self.activeAnimation = animations.ShipToShipBattle(kanmusu)
 						self.isAnimationActive = True
 						self.currentLevel.selectedKanmusu = None
