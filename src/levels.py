@@ -133,6 +133,14 @@ class Level(object):
 	def varInit(self):
 		self.selectedKanmusu = None
 		self.cursor = sprites.Cursor(self)
+		self.turn = 0
+		self.isFleetTurnDone = dict()
+		self.isEnemyTurnDone = dict()
+		for key in self.kanmusuDict:
+			self.isFleetTurnDone[key] = False
+		for key in self.enemyDict:
+			self.isEnemyTurnDone[key] = False
+
 
 	###############
 	## drawMap will take the map symbols and draw it as an actual pygame surface

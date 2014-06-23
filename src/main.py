@@ -261,15 +261,16 @@ class WaterEmblem(object):
 				# if no kanmusu are currently selected
 				######################
 				if self.currentLevel.selectedKanmusu == None:
-					self.sfx.select.play()
 					#go through each kanmusu and find one that...
 					for kanmusu in self.currentLevel.kanmusuDict:
 						#matches our current cursor position if any do at all
 						if self.currentLevel.kanmusuDict[kanmusu].pos == cursor.truePos:
-							#and make that our current "selected" kanmusu
-							self.currentLevel.selectedKanmusu = kanmusu
-							self.contextMenu.isOn = True
-
+							# and has not already moved, eg can still move her this turn
+							if not self.currentLevel.isFleetTurnDone[kanmusu]:
+								#and make that our current "selected" kanmusu
+								self.currentLevel.selectedKanmusu = kanmusu
+								self.contextMenu.isOn = True
+								self.sfx.select.play()
 				######################
 				# if a kanmusu is already selected (eg, we're moving her)
 				######################
@@ -306,6 +307,8 @@ class WaterEmblem(object):
 					elif (self.contextMenu.selected == "move" and 
 						  tuple(cursor.truePos) in self.movableTiles and 
 						  self.currentLevel.cursor.truePos not in positions):
+						self.currentLevel.selectedKanmusu = kanmusu
+						self.currentLevel.isFleetTurnDone[kanmusu] = True
 						self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
 						# display context menu here for options (move, move and attack, attack, cancel)
 						self.currentLevel.selectedKanmusu = None
@@ -313,6 +316,7 @@ class WaterEmblem(object):
 					# We've selected to attack and the selected tile contains an enemy unit
 					elif (self.contextMenu.selected == "attack" and
 						  cursor.truePos in enemyPositions):
+						self.currentLevel.isFleetTurnDone[kanmusu] = True
 						for enemy in self.currentLevel.enemyDict:
 							enemy = self.currentLevel.enemyDict[enemy]
 							if enemy.pos == cursor.truePos:
@@ -327,6 +331,13 @@ class WaterEmblem(object):
 					else:
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
+					done = True
+					for kanmusu in self.currentLevel.isFleetTurnDone:
+						if not self.currentLevel.isFleetTurnDone[kanmusu]:
+							done = False
+					if done:
+						for kanmusu in self.currentLevel.isFleetTurnDone:
+							self.currentLevel.isFleetTurnDone[kanmusu] = False
 			if cancel:
 				self.sfx.cancel.play()
 				self.contextMenu.reset()
@@ -429,15 +440,12 @@ class WaterEmblem(object):
 			self.win.blit(sprite.image,sprite.rect)
 		if self.contextMenu.isOn:
 			cursorPos = self.currentLevel.cursor.pos
-			print cursorPos, self.currentLevel.size
 			windowSize = (20,11)
 			if cursorPos[0] >= windowSize[0]-3:
-				print "a"
 				left = self.currentLevel.cursor.pos[0]*32-100
 			else: 
 				left = self.currentLevel.cursor.pos[0]*32+32
 			if cursorPos[1] >= windowSize[1]-3:
-				print "b"
 				top = self.currentLevel.cursor.pos[1]*32-64
 			else:
 				top = self.currentLevel.cursor.pos[1]*32
