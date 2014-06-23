@@ -1,0 +1,13 @@
+running from:/Users/YutoTakamoto/Dropbox/YutoProgramming/python/WaterEmblem/src
+Traceback (most recent call last):
+  File "/Users/YutoTakamoto/Dropbox/YutoProgramming/python/WaterEmblem/src/main.app/Contents/Resources/__boot__.py", line 137, in <module>
+    _run('PyWright_run.py')
+  File "/Users/YutoTakamoto/Dropbox/YutoProgramming/python/WaterEmblem/src/main.app/Contents/Resources/__boot__.py", line 134, in _run
+    execfile(path, globals(), globals())
+  File "/Users/YutoTakamoto/Dropbox/YutoProgramming/python/WaterEmblem/src/main.app/Contents/Resources/PyWright_run.py", line 13, in <module>
+    from core import libengine
+  File "core/libengine.pyc", line 13, in <module>
+  File "core/core.pyc", line 3, in <module>
+  File "core/gui.pyc", line 6, in <module>
+    
+IOError: unable to read font filename

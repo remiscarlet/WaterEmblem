@@ -91,12 +91,16 @@ class WaterEmblem(object):
 				self.shallowRect = self.shallow.get_rect()
 		self.movableTileOverlay = pygame.Surface((32,32), pygame.SRCALPHA, 32).convert_alpha()
 		self.unmovableTileOverlay = pygame.Surface((32,32), pygame.SRCALPHA, 32).convert_alpha()
+		self.firableTileOverlay = pygame.Surface((32,32), pygame.SRCALPHA, 32).convert_alpha()
 		blue = pygame.Surface((32,32))
 		blue.fill((0,0,150))
 		red = pygame.Surface((32,32))
 		red.fill((150,0,0))
+		green = pygame.Surface((32,32))
+		green.fill((0,150,0))
 		blit_alpha(self.movableTileOverlay,blue,(0,0),150)
 		blit_alpha(self.unmovableTileOverlay,red,(0,0),150)
+		blit_alpha(self.firableTileOverlay,green,(0,0),150)
 		####
 		self.tilePortraits = tilePortraitInit()
 		self.contextMenu = gui.ContextMenu()
@@ -232,6 +236,27 @@ class WaterEmblem(object):
 		self.playerUIGroup.update()
 		self.gameInfoPanel2.update(self.currentLevel)
 		cursor = self.currentLevel.cursor
+
+		#####################
+		# TURN TICK HANDLER #
+		#####################
+
+		incrementTurn = True
+		for kanmusu in self.currentLevel.kanmusuDict:
+			if ((self.currentLevel.turn%self.currentLevel.kanmusuDict[kanmusu].tickSpeed) == 0 and
+				not self.currentLevel.kanmusuDict[kanmusu].hasMoved):
+				incrementTurn = False
+				print kanmusu
+		if incrementTurn:
+			self.currentLevel.turn += 1
+			for kanmusu in self.currentLevel.kanmusuDict:
+				self.currentLevel.kanmusuDict[kanmusu].hasMoved = False
+		print self.currentLevel.turn
+
+		#################
+		# EVENT HANDLER #
+		#################
+
 		if self.isAnimationActive: 
 			#Will return True if animation is "done". Otherwise will just update normally
 			if self.activeAnimation.update() == True:
@@ -266,11 +291,13 @@ class WaterEmblem(object):
 						#matches our current cursor position if any do at all
 						if self.currentLevel.kanmusuDict[kanmusu].pos == cursor.truePos:
 							# and has not already moved, eg can still move her this turn
-							if not self.currentLevel.isFleetTurnDone[kanmusu]:
-								#and make that our current "selected" kanmusu
-								self.currentLevel.selectedKanmusu = kanmusu
-								self.contextMenu.isOn = True
-								self.sfx.select.play()
+							if not self.currentLevel.kanmusuDict[kanmusu].hasMoved:
+								# and is her turn (eg, the "turn number" mods to 0.)
+								if (self.currentLevel.turn%self.currentLevel.kanmusuDict[kanmusu].tickSpeed)==0:
+									#and make that our current "selected" kanmusu
+									self.currentLevel.selectedKanmusu = kanmusu
+									self.contextMenu.isOn = True
+									self.sfx.select.play()
 				######################
 				# if a kanmusu is already selected (eg, we're moving her)
 				######################
@@ -313,9 +340,12 @@ class WaterEmblem(object):
 						# display context menu here for options (move, move and attack, attack, cancel)
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
+						self.currentLevel.kanmusuDict[kanmusu].hasMoved = True
+
 					# We've selected to attack and the selected tile contains an enemy unit
 					elif (self.contextMenu.selected == "attack" and
-						  cursor.truePos in enemyPositions):
+						  cursor.truePos in enemyPositions and
+						  getDisplacement(self.currentLevel.kanmusuDict[kanmusu].pos,cursor.truePos)<=self.currentLevel.kanmusuDict[kanmusu].range):
 						self.currentLevel.isFleetTurnDone[kanmusu] = True
 						for enemy in self.currentLevel.enemyDict:
 							enemy = self.currentLevel.enemyDict[enemy]
@@ -328,6 +358,8 @@ class WaterEmblem(object):
 						self.isAnimationActive = True
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
+						self.currentLevel.kanmusuDict[kanmusu].hasMoved = True
+
 					else:
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
@@ -383,7 +415,7 @@ class WaterEmblem(object):
 			width = self.currentLevel.width if self.currentLevel.width<640 else 640
 			height = self.currentLevel.height if self.currentLevel.height<352 else 352
 			topLeft = (boardTopLeft[0]*32,boardTopLeft[1]*32,width,height)
-			drawMovableTileOverlay()
+			drawTileOverlay()
 			self.gameBoardWin.blit(self.currentLevel.mapSurf, (self.currentLevel.widthPad,self.currentLevel.heightPad), topLeft)
 			#ship = self.currentLevel.kanmusuDict["kaga"]
 			#pos = ship.pos
@@ -400,23 +432,23 @@ class WaterEmblem(object):
 			self.gameInfoWin.blit(self.gameInfoPanel4.fullSurf,self.gameInfoPanel4.rect)
 			#drawPanel5():
 			self.gameInfoWin.blit(self.gameInfoPanel5.fullSurf,self.gameInfoPanel5.rect)
-		def drawMovableTileOverlay():
-			def overlayTile(row,col,movable=True):
-				if movable: self.currentLevel.mapSurf.blit(self.movableTileOverlay,(row*32,col*32))
-				if not movable: self.currentLevel.mapSurf.blit(self.unmovableTileOverlay,(row*32,col*32))
-			#def floodFillOverlay(row,col,startPos,maxDisplacement,kanmusuPos):
-			#	if (getDisplacement((row,col),startPos)<=maxDisplacement and
-			#		[row,col] not in filledPos):
-			#		filledPos.append([row,col])
-			#		if [row,col] not in kanmusuPos and [row,col] not in enemyPos: overlayTile(row,col,True)
-			#		else: overlayTile(row,col,False)
-			#		floodFillOverlay(row+1,col,startPos,dist, kanmusuPos)
-			#		floodFillOverlay(row-1,col,startPos,dist, kanmusuPos)
-			#		floodFillOverlay(row,col+1,startPos,dist, kanmusuPos)
-			#		floodFillOverlay(row,col-1,startPos,dist, kanmusuPos)
+		def drawTileOverlay():
+			def overlayTile(row,col,color):
+				if color=="blue": self.currentLevel.mapSurf.blit(self.movableTileOverlay,(row*32,col*32))
+				if color=="red": self.currentLevel.mapSurf.blit(self.unmovableTileOverlay,(row*32,col*32))
+				if color=="green": self.currentLevel.mapSurf.blit(self.firableTileOverlay,(row*32,col*32))
+			def floodFillOverlay(row,col,startPos,maxDisplacement,enemyPos):
+				if (getDisplacement((row,col),startPos)<=maxDisplacement and
+					[row,col] not in filledPos):
+					filledPos.append([row,col])
+					if [row,col] not in enemyPos: overlayTile(row,col,"green")
+					else: overlayTile(row,col,"red")
+					floodFillOverlay(row+1,col,startPos,maxDisplacement, kanmusuPos)
+					floodFillOverlay(row-1,col,startPos,maxDisplacement, kanmusuPos)
+					floodFillOverlay(row,col+1,startPos,maxDisplacement, kanmusuPos)
+					floodFillOverlay(row,col-1,startPos,maxDisplacement, kanmusuPos)
 
-
-			if self.currentLevel.selectedKanmusu != None and self.contextMenu.selected == "move":
+			if self.currentLevel.selectedKanmusu != None:
 				kanmusu = self.currentLevel.selectedKanmusu
 				kanmusuPos = list()
 				enemyPos = list()
@@ -424,11 +456,19 @@ class WaterEmblem(object):
 					if key != kanmusu: kanmusuPos.append(self.currentLevel.kanmusuDict[key].pos)
 				for key in self.currentLevel.enemyDict:
 					enemyPos.append(self.currentLevel.enemyDict[key].pos)
-				for tile in self.movableTiles:
-					if list(tile) not in kanmusuPos and list(tile) not in enemyPos:
-						overlayTile(tile[0],tile[1],True)
-					else:
-						overlayTile(tile[0],tile[1],False)
+				if self.contextMenu.selected == "move":
+					for tile in self.movableTiles:
+						if list(tile) not in kanmusuPos and list(tile) not in enemyPos:
+							overlayTile(tile[0],tile[1],"blue")
+						else:
+							overlayTile(tile[0],tile[1],"red")
+				if self.contextMenu.selected == "attack":
+					firingRange = self.currentLevel.kanmusuDict[kanmusu].range
+					pos = self.currentLevel.kanmusuDict[kanmusu].pos
+					filledPos = list()
+					floodFillOverlay(pos[0],pos[1],pos,firingRange,kanmusuPos)
+
+
 
 
 		drawBoardPanel()

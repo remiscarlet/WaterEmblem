@@ -21,6 +21,7 @@ RE = {"hp":180,"armor":110,"los":50,"evasion":45,"firepower":90,"torpedo":100,"a
 RU = {"hp":90,"armor":70,"los":20,"evasion":3,"firepower":65,"torpedo":0,"aa":70,"asw":0,"speed":3,
 	    "range":4,"luck":5,"slots":3,"aircraft":(3,3,3),"class":"bb"}
 
+TICKSPEEDS = {"dd":3,"fastbb":5,"cv":5,"bb":6,"cl":4,"ca":5,"cvl":4}
 
 class Kanmusu(object):
 	#kanmusu should be supplied in a lowercase name of kanmusu
@@ -54,6 +55,8 @@ class Kanmusu(object):
 		self.name = kanmusu.capitalize()
 		self.sprite = sprites.UnitSprite(kanmusu)
 		self.voices = sounds.Voices(kanmusu.lower())
+		self.tickSpeed = TICKSPEEDS[self.shipClass]
+		self.hasMoved = False
 
 class Enemy(object):
 	#shipType is the variant of the ship. Eg, kai, flagship, flagship-kai, elite, etc.
