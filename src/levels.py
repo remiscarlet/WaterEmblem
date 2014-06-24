@@ -136,6 +136,7 @@ class Level(object):
 		self.turn = 0
 		# activeAutoUnits are units the player don't control but require tick based timing.
 		# Eg, fired torpedoes, aerial units, etc.
+		# Maybe I should make it a dictionary with IDs?
 		self.activeAutoUnits = list()
 
 
@@ -145,8 +146,6 @@ class Level(object):
 	###############
 	def drawMap(self):
 		win = pygame.Surface((32*self.size[1],32*self.size[0]))
-		#oceanTile = pygame.Surface((32,32))
-		#oceanTile.fill((0,0,150))
 		for row in xrange(len(self.map)):
 			for col in xrange(len(self.map[0])):
 				tileType = self.map[row][col]

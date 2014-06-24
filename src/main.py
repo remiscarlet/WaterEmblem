@@ -321,7 +321,11 @@ class WaterEmblem(object):
 						if self.contextMenu.pos == 0: 
 							y,x = cursor.truePos
 							speed = self.currentLevel.kanmusuDict[kanmusu].speed
-							temp, self.movableTiles = reachable.reachable(self.currentLevel.terrainCostMap, y, x, speed)
+							tempMap = self.currentLevel.terrainCostMap
+							#Setting enemy positions to impassable. (Because you're not going to be sailing 5m away from an enemy without exchanging fire.)
+							for pos in enemyPositions:
+								tempMap[pos[1]][pos[0]] = -1
+							self.movableTiles = reachable.reachable(tempMap, y, x, speed)[1]
 							self.contextMenu.selected = "move"
 						#If you select "attack"
 						if self.contextMenu.pos == 1:
@@ -336,7 +340,6 @@ class WaterEmblem(object):
 						  tuple(cursor.truePos) in self.movableTiles and 
 						  self.currentLevel.cursor.truePos not in positions):
 						self.currentLevel.selectedKanmusu = kanmusu
-						self.currentLevel.isFleetTurnDone[kanmusu] = True
 						self.currentLevel.kanmusuDict[kanmusu].pos = cursor.truePos
 						# display context menu here for options (move, move and attack, attack, cancel)
 						self.currentLevel.selectedKanmusu = None
@@ -347,7 +350,6 @@ class WaterEmblem(object):
 					elif (self.contextMenu.selected == "attack" and
 						  cursor.truePos in enemyPositions and
 						  getDisplacement(self.currentLevel.kanmusuDict[kanmusu].pos,cursor.truePos)<=self.currentLevel.kanmusuDict[kanmusu].range):
-						self.currentLevel.isFleetTurnDone[kanmusu] = True
 						for enemy in self.currentLevel.enemyDict:
 							enemy = self.currentLevel.enemyDict[enemy]
 							if enemy.pos == cursor.truePos:
@@ -364,13 +366,6 @@ class WaterEmblem(object):
 					else:
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
-					done = True
-					for kanmusu in self.currentLevel.isFleetTurnDone:
-						if not self.currentLevel.isFleetTurnDone[kanmusu]:
-							done = False
-					if done:
-						for kanmusu in self.currentLevel.isFleetTurnDone:
-							self.currentLevel.isFleetTurnDone[kanmusu] = False
 			if cancel:
 				self.sfx.cancel.play()
 				self.contextMenu.reset()

@@ -32,6 +32,7 @@
 
 6/16/2014 - Remi
 	- Added context menu. Battle function still not implemented.
+
 6/21/2014 - Remi
 	- Teehee forgot to update the changelog for the past couple of days.
 	- Added battle animation (Unfinished, but mostly there)
@@ -44,3 +45,7 @@
 	- Added attack range.
 	- Added attack range overlay
 	- Polished up misc backend stuff here and there.
+
+6/24/2014 - Remi
+	- Enemies are now impassable
+	- Started (?) AI work.
