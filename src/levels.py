@@ -134,12 +134,10 @@ class Level(object):
 		self.selectedKanmusu = None
 		self.cursor = sprites.Cursor(self)
 		self.turn = 0
-		self.isFleetTurnDone = dict()
-		self.isEnemyTurnDone = dict()
-		for key in self.kanmusuDict:
-			self.isFleetTurnDone[key] = False
-		for key in self.enemyDict:
-			self.isEnemyTurnDone[key] = False
+		# activeAutoUnits are units the player don't control but require tick based timing.
+		# Eg, fired torpedoes, aerial units, etc.
+		self.activeAutoUnits = list()
+
 
 
 	###############

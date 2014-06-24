@@ -37,3 +37,10 @@
 	- Added battle animation (Unfinished, but mostly there)
 	- Added character voice loading from sounds.py. Will only load voices of kanmusu you have in your fleet.
 	- Changed how set_vol works so it just cycles through the __dict__... Not sure why I didn't think of that before.
+
+6/23/2014 - Remi
+	- Teehee forgot yesterday's changelog.
+	- Fully implemented tick-based turn mechanic.
+	- Added attack range.
+	- Added attack range overlay
+	- Polished up misc backend stuff here and there.

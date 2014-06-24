@@ -10,6 +10,7 @@ import defaultVals
 import string
 import sounds
 import levels
+import attacks
 import popup
 import animations
 import reachable
