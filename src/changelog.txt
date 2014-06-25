@@ -49,3 +49,6 @@
 6/24/2014 - Remi
 	- Enemies are now impassable
 	- Started (?) AI work.
+
+6/25/2014 - Remi
+	- Implemented Fog of War

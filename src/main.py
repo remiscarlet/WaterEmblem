@@ -247,12 +247,10 @@ class WaterEmblem(object):
 			if ((self.currentLevel.turn%self.currentLevel.kanmusuDict[kanmusu].tickSpeed) == 0 and
 				not self.currentLevel.kanmusuDict[kanmusu].hasMoved):
 				incrementTurn = False
-				print kanmusu
 		if incrementTurn:
 			self.currentLevel.turn += 1
 			for kanmusu in self.currentLevel.kanmusuDict:
 				self.currentLevel.kanmusuDict[kanmusu].hasMoved = False
-		print self.currentLevel.turn
 
 		#################
 		# EVENT HANDLER #
@@ -345,6 +343,7 @@ class WaterEmblem(object):
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
 						self.currentLevel.kanmusuDict[kanmusu].hasMoved = True
+						self.currentLevel.updateFOWVisibility()
 
 					# We've selected to attack and the selected tile contains an enemy unit
 					elif (self.contextMenu.selected == "attack" and
@@ -367,7 +366,7 @@ class WaterEmblem(object):
 						self.currentLevel.selectedKanmusu = None
 						self.contextMenu.selected = None
 			if cancel:
-				self.sfx.cancel.play()
+				self.sfx.cancel.play() 
 				self.contextMenu.reset()
 				self.currentLevel.selectedKanmusu = None
 				self.contextMenu.selected = None
@@ -405,18 +404,17 @@ class WaterEmblem(object):
 			for enemy in self.currentLevel.enemyDict:
 				ship = self.currentLevel.enemyDict[enemy]
 				pos = ship.pos
-				topleft = (pos[0]*32,pos[1]*32)
-				self.currentLevel.mapSurf.blit(ship.sprite.image,topleft)	
+				if tuple(pos) in self.currentLevel.friendlyFOWVisibility:
+					topleft = (pos[0]*32,pos[1]*32)
+					self.currentLevel.mapSurf.blit(ship.sprite.image,topleft)	
 			boardTopLeft = self.currentLevel.boardViewTopLeft
 			width = self.currentLevel.width if self.currentLevel.width<640 else 640
 			height = self.currentLevel.height if self.currentLevel.height<352 else 352
 			topLeft = (boardTopLeft[0]*32,boardTopLeft[1]*32,width,height)
 			drawTileOverlay()
 			self.gameBoardWin.blit(self.currentLevel.mapSurf, (self.currentLevel.widthPad,self.currentLevel.heightPad), topLeft)
-			#ship = self.currentLevel.kanmusuDict["kaga"]
-			#pos = ship.pos
-			#topleft = (pos[0]*32,pos[1]*32)
-			#self.gameBoardWin.blit(ship.sprite.image,topleft)
+			self.gameBoardWin.blit(self.currentLevel.visibilityMap,(self.currentLevel.widthPad,self.currentLevel.heightPad), topLeft)
+
 		def drawInfoPanel():
 			#drawPanel1():
 			self.gameInfoWin.blit(self.gameInfoPanel1,self.gameInfoPanel1Rect)
@@ -500,6 +498,7 @@ class WaterEmblem(object):
 		#Drawing info UI last to "cover up" anything that might spill down from above.
 		drawInfoPanel()
 		self.win.blit(self.gameInfoWin, self.gameInfoWinRect)
+
 	def drawEditor(self):
 		pass
 

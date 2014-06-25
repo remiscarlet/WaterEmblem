@@ -6,6 +6,7 @@ import terrain
 import popup
 import os
 import sprites
+import reachable
 import kanmusu
 
 # o = ocean
@@ -73,8 +74,9 @@ TESTUNITLIST = {"1":"kaga","2":"taihou","3":"kongou","4":"inazuma","A":"wo","B":
 class Level(object):
 	def __init__(self, this):
 		self.tiles = terrain.Tiles(self)
-		self.mapInit(this)
+		self.preMapInit()
 		self.spriteInit()
+		self.mapInit(this)
 		self.varInit()
 
 	#	self.oceanTile = pygame.image.load(os.path.join(os.path.curdir,"img","tiles","actual_ocean.png"))
@@ -90,14 +92,24 @@ class Level(object):
 	#	self.oceanRect = self.ocean.get_rect()
 	#	self.shallow = pygame.image.load(os.path.join(os.path.curdir,"img","tile portraits", "shallow.png"))
 	#	self.shallowRect = self.shallow.get_rect()
-	##############
-	## mapInit initializes the map and related data
-	##############
-	def mapInit(self, this):
+
+	def preMapInit(self):
 		self.map = TESTMAP2
 		self.unitPos = TESTMAPUNITPOS2
 		self.playerPos = self.getShipPos()
 		self.enemyPos = self.getShipPos(1)
+
+	def spriteInit(self):
+		self.kanmusuDict = dict()
+		self.enemyDict = dict()
+		for key in self.playerPos:
+			self.kanmusuDict[key] = kanmusu.Kanmusu(key,self.playerPos[key])
+		for key in self.enemyPos:
+			self.enemyDict[key] = kanmusu.Enemy(key,self.enemyPos[key])
+	##############
+	## mapInit initializes the map and related data
+	##############
+	def mapInit(self, this):
 		self.size = (len(self.map),len(self.map[0])) #TUPLE OF MAP SIZE. Y THEN X. AGAIN, ROW THEN COL
 		self.width = self.size[1]*32
 		self.height = self.size[0]*32
@@ -113,23 +125,22 @@ class Level(object):
 		if self.width<this.gameBoardWinRect[2]: self.widthPad = (this.gameBoardWinRect[2]-self.width)/2
 		if self.height<this.gameBoardWinRect[3]: self.heightPad = (this.gameBoardWinRect[3]-self.height)/2
 		self.terrainCostMap = list()
+		self.visionCostMap = list()
 		for row in xrange(len(self.map)):
 			self.terrainCostMap.append([])
+			self.visionCostMap.append([])
 			for col in xrange(len(self.map[row])):
 				terrainType = self.map[row][col]
 				if terrainType == "o": terrainType = "ocean"
 				if terrainType == "s": terrainType = "shallow" 
 				terrainCost = eval("self.tiles."+terrainType+".movementCost")
+				visionCost = eval("self.tiles."+terrainType+".visionCost")
 				self.terrainCostMap[row].append(terrainCost)
+				self.visionCostMap[row].append(visionCost)
 
+		#FOWVisibility is a list of positions that __ARE__ VISIBLE.
+		self.updateFOWVisibility()
 
-	def spriteInit(self):
-		self.kanmusuDict = dict()
-		self.enemyDict = dict()
-		for key in self.playerPos:
-			self.kanmusuDict[key] = kanmusu.Kanmusu(key,self.playerPos[key])
-		for key in self.enemyPos:
-			self.enemyDict[key] = kanmusu.Enemy(key,self.enemyPos[key])
 	def varInit(self):
 		self.selectedKanmusu = None
 		self.cursor = sprites.Cursor(self)
@@ -155,6 +166,37 @@ class Level(object):
 				if tileType == "s":
 					win.blit(self.tiles.shallow.image,pos)
 		return win
+
+	################
+	## Returns a list of tiles visible based off of LoS and terrain vision cost.
+	################
+	# vessels should be supplied as either kanmusuDict or enemyDict
+	def updateFOWVisibility(self):
+		self.friendlyFOWVisibility = set()
+		self.enemyFOWVisibility = set()
+		vessels = [self.kanmusuDict,self.enemyDict]
+		for i in xrange(len(vessels)):
+			for vessel in vessels[i]:
+				vessel = vessels[i][vessel]
+				los = vessel.los
+				distance = 3 if los<30 else round(los/10.0)
+				visibility = reachable.reachable(self.visionCostMap, vessel.pos[0], vessel.pos[1], distance)[1]
+				if i == 0: 
+					for item in visibility:
+						self.friendlyFOWVisibility.add(item)
+				if i == 1:
+					for item in visibility:
+						self.enemyFOWVisibility.add(item)
+
+		self.visibilityMap = pygame.Surface((32*self.size[1],32*self.size[0]), pygame.SRCALPHA, 32)
+		gray = pygame.Surface((32,32), pygame.SRCALPHA, 32)
+		gray.fill((155,155,155,150))
+		for row in xrange(len(self.map)):
+			for col in xrange(len(self.map[0])):
+				if (col,row) in self.friendlyFOWVisibility: continue
+				else:
+					pos = (32*col,32*row) #FLIPPING ROW AND COL HERE BECAUSE METHODS TAKE ARGS IN X AND Y, NOT Y AND X
+					self.visibilityMap.blit(gray, pos)
 
 	#################
 	## getShipPos will take the input map and return the positions of either the player's ships on the map or the enemy's ships based off of the input
@@ -182,3 +224,4 @@ class Level(object):
 				if whichPlayer == 1 and val.isalpha():
 					pos[TESTUNITLIST[val]] = [col,row] #COL ROW -> X Y. NOTE THE INVERTED ORDER
 		return pos
+
