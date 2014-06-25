@@ -1,7 +1,3 @@
-isreachable()
+torpedo detection a CHANCE with closer torpedoes having higher detection chance.
 
-turning radius for BBs?
-
-"Tick based movement"
-Torpedos take "ticks" to travel
-torpedo sighting based off of LoS
+effective AA range. AA stats will affect any enemy aerial units within that range. (Eg, cluster ships together for stronger effective AA)
