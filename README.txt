@@ -27,13 +27,12 @@ Remi_Scarlet, or Remi
 
 Even though we don't have jack shit yet, obvious credits go to DMM and Kadokawa Games for making KanColle to begin with. 
 
-Blablabla insert legal shit here that we'll get to later.
 
 ###############
 ## Licensing ##
 ###############
 
-Or maybe we'll put legal shit here. I think it should go here. Whatever.
+This work is attributed under the Fair Use license. This game is created as an academic exercise for the authors to apply their programming skills and knowledge while attempting to entertain fellow fans.
+All materials originally from Kantai Collection are exclusively DMM and Kadokawa Games' intellectual property. All original material used in this exercise such as code and original graphics are copyrighted under Remi_Scarlet and Ippikiryu. All original material such as the code is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License. (http://creativecommons.org/licenses/by-nc/4.0/)
 
-Blablabla creative commons or fair use or whatever the hell it's supposed to be.
-
+This page is subject to change without notice.
