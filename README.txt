@@ -1,3 +1,9 @@
+#### [HI I'M GONNA BE REWRITING THIS IN GOLANG EVENTUALLY TM](https://github.com/remiscarlet/WaterEmblem-Redux)
+
+
+
+
+
 ####################
 ### WATER EMBLEM ###
 ####################
